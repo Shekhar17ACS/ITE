@@ -11,12 +11,14 @@ import { MembershipForm } from './components/membership/MembershipForm';
 import { Dashboard } from './components/admin/Dashboard';
 import { LoadingSpinner } from './components/LoadingSpinner';
 import { Suspense } from 'react';
+import { ToastContainer } from 'react-toastify';
 
 function App() {
   return (
     <Router>
       <Suspense fallback={<LoadingSpinner />}>
         <div className="min-h-screen bg-gray-50 flex flex-col">
+        <ToastContainer />
           <Toaster position="top-right" />
           <Header />
           <main className="flex-grow">
