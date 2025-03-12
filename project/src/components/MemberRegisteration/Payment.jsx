@@ -11,7 +11,7 @@ const Payment = ({ prevStep, formData }) => {
 
   const handlePayment = async () => {
     const options = {
-      key: "your_razorpay_key",
+      key: "rzp_test_U4bdC62vxssMpp",
       amount: 1000 * 100,
       currency: "INR",
       name: "Course Registration",
