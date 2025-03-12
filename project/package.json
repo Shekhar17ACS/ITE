@@ -17,13 +17,11 @@
     "framer-motion": "^10.16.0",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
-<<<<<<< HEAD
     "react-hot-toast": "^2.4.1",
     "react-intersection-observer": "^9.5.2",
     "react-loading-skeleton": "^3.3.1",
     "react-router-dom": "^6.15.0",
     "react-toastify": "^11.0.5",
-=======
     "react-hook-form": "^7.54.2",
     "react-hot-toast": "^2.4.1",
     "react-icon": "^1.0.0",
@@ -31,7 +29,6 @@
     "react-intersection-observer": "^9.5.2",
     "react-loading-skeleton": "^3.3.1",
     "react-router-dom": "^6.15.0",
->>>>>>> 2c936fc42701b2aeaaaeda012db8e182198ef7df
     "tailwind-merge": "^1.14.0"
   },
   "devDependencies": {
