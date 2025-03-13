@@ -12,6 +12,8 @@ import { Dashboard } from './components/admin/Dashboard';
 import { LoadingSpinner } from './components/LoadingSpinner';
 import { Suspense } from 'react';
 import { ToastContainer } from 'react-toastify';
+import { Events } from './components/Events';
+import { ForgotPassword } from './components/auth/ForgotPassword';
 
 function App() {
   return (
@@ -29,7 +31,9 @@ function App() {
               <Route path="/login" element={<LoginForm />} />
               <Route path="/register" element={<RegisterForm />} />
               <Route path="/membership" element={<MembershipForm />} />
+              <Route path="/events" element={<Events />} />
               <Route path="/admin" element={<Dashboard />} />
+              <Route path="/forgot-password" element={<ForgotPassword />} />
             </Routes>
           </main>
           <Footer />
