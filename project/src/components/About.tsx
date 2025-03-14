@@ -30,7 +30,7 @@ export function About() {
             transition={{ duration: 0.8, delay: 0.2 }}
           >
             <img
-              src="https://lh3.googleusercontent.com/p/AF1QipMNDzNJKJ6y5pqufJwmd8E0OfgUe7aImgDAhWr0=s680-w680-h510"
+              src="https://content3.jdmagicbox.com/comp/chandigarh/12/0172p172std7012/catalogue/institution-of-electronics-and-telecommunication-engineers-chandigarh-sector-30b-chandigarh-computer-training-institutes-for-c-programming-trMKszQGLz.jpg"
               alt="IETE Building"
               className="rounded-lg shadow-lg"
             />
