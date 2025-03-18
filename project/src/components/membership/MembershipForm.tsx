@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { Button } from '../ui/Button';
-import MultiStepForm from '../pages/MultiStepForm';
+// import MultiStepForm from '../pages/MultiStepForm';
 
 
 const membershipTypes = [
@@ -29,7 +29,7 @@ export function MembershipForm() {
       transition={{ duration: 0.5 }}
       className="mt-10 sm:mx-auto sm:w-full sm:max-w-xl"
     >
-        <MultiStepForm/>
+        {/* <MultiStepForm/> */}
       <form onSubmit={handleSubmit} className="space-y-8 mt-12">
         <div>
           <label className="text-base font-semibold text-gray-900">Membership Type</label>
