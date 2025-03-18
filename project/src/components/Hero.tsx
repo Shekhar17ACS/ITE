@@ -4,12 +4,28 @@ import { Link } from 'react-router-dom';
 export function Hero() {
   return (
     <div className="relative h-screen">
-      <div 
+      {/* <div 
         className="absolute inset-0 bg-cover bg-center"
         style={{
           backgroundImage: 'url("https://images.unsplash.com/photo-1517077304055-6e89abbf09b0?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2069&q=80")',
         }}
-      >
+      > */}
+      
+      <div className="absolute inset-0">
+        <video
+          autoPlay
+          loop
+          muted
+          playsInline
+          className="w-full h-full object-cover"
+        >
+          <source
+            src="https://videos.pexels.com/video-files/29167798/12595747_640_360_30fps.mp4" // Replace with your video URL
+            type="video/mp4"
+          />
+          Your browser does not support the video tag.
+        </video>
+
         <div className="absolute inset-0 bg-black bg-opacity-60" />
       </div>
       

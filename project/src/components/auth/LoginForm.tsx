@@ -11,7 +11,11 @@ export function LoginForm() {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
+<<<<<<< HEAD
   const handleSubmit = async (e:any) => {
+=======
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+>>>>>>> 775ebc615f7958c118aff0edd4183cf0f15fdc3c
     e.preventDefault();
     setIsLoading(true);
 
@@ -86,7 +90,7 @@ export function LoginForm() {
           </div>
 
           <div className="text-sm">
-            <a href="#" className="font-semibold text-blue-600 hover:text-blue-500">
+            <a href="/forgot-password" className="font-semibold text-blue-600 hover:text-blue-500">
               Forgot password?
             </a>
           </div>

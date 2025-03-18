@@ -1,5 +1,9 @@
 import { useState, useEffect } from "react";
+<<<<<<< HEAD
  
+=======
+// import "../index.css";
+>>>>>>> 775ebc615f7958c118aff0edd4183cf0f15fdc3c
 import { motion, AnimatePresence } from "framer-motion";
 
 const ParentsDetails = ({ nextStep, prevStep, formData, setFormData }) => {
