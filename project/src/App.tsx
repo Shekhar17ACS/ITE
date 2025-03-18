@@ -15,7 +15,8 @@ import { ToastContainer } from 'react-toastify';
 import { Events } from './components/Events';
 import { ForgotPassword } from './components/auth/ForgotPassword';
 import { EligibilityCheck } from './components/EligibilityCheck';
-import NewsletterAndMap from './NewsletterAndMap';
+import Newsletter from './components/NewsletterAndMap';
+
 
 function App() {
   return (
@@ -51,7 +52,7 @@ function Home() {
     <>
       <Hero />
       <About />
-      <NewsletterAndMap/>
+      <Newsletter/>
       {/* <Contact /> */}
     </>
   );
