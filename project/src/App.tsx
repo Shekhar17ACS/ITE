@@ -14,6 +14,9 @@ import { Suspense } from 'react';
 import { ToastContainer } from 'react-toastify';
 import { Events } from './components/Events';
 import { ForgotPassword } from './components/auth/ForgotPassword';
+import { EligibilityCheck } from './components/EligibilityCheck';
+import Newsletter from './components/NewsletterAndMap';
+
 
 function App() {
   return (
@@ -34,6 +37,7 @@ function App() {
               <Route path="/events" element={<Events />} />
               <Route path="/admin" element={<Dashboard />} />
               <Route path="/forgot-password" element={<ForgotPassword />} />
+              <Route path="/eligibility-check" element={<EligibilityCheck />} /> 
             </Routes>
           </main>
           <Footer />
@@ -48,7 +52,8 @@ function Home() {
     <>
       <Hero />
       <About />
-      <Contact />
+      <Newsletter/>
+      {/* <Contact /> */}
     </>
   );
 }
