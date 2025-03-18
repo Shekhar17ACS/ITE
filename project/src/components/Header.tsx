@@ -8,6 +8,7 @@ const navigation = [
   { name: 'Home', href: '/' },
   { name: 'About', href: '/about' },
   { name: 'Membership', href: '/membership' },
+  { name: 'Eligibility Check', href: '/eligibility-check' },
   { name: 'Events', href: '/events' },
   { name: 'Contact', href: '/contact' },
 ];
