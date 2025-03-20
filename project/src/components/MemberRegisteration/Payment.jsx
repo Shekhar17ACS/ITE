@@ -78,12 +78,17 @@
 // };
 
 // export default Payment;
+
+
 import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
+import ThankYouPage from "./ThankYouPage";
+import PaymentFailedPage from "./PaymentFailedPage";
 
 const Payment = ({ prevStep, formData }) => {
   const [isOpen, setIsOpen] = useState(false);
   const [paymentId, setPaymentId] = useState('');
+  const [paymentStatus, setPaymentStatus] = useState(null);
 
   useEffect(() => {
     const script = document.createElement("script");
@@ -103,6 +108,7 @@ const Payment = ({ prevStep, formData }) => {
       handler: (response) => {
         console.log("Payment successful!", response);
         setPaymentId(response.razorpay_payment_id);
+        setPaymentStatus(true);
         setIsOpen(true);
       },
       prefill: {
@@ -117,6 +123,11 @@ const Payment = ({ prevStep, formData }) => {
 
     const rzp = new window.Razorpay(options);
     rzp.open();
+  };
+
+  const handlePaymentFailure = () => {
+    setPaymentStatus(false);
+    setIsOpen(true);
   };
 
   return (
@@ -166,7 +177,7 @@ const Payment = ({ prevStep, formData }) => {
           animate={{ opacity: 1 }}
           exit={{ opacity: 0 }}
           transition={{ duration: 0.5 }}
-          className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center"
+          className="fixed top-0 left-0 w-full h-full bg-black bg-opacity-50 flex justify-center items-center z-50"
         >
           <motion.div
             initial={{ scale: 0.5 }}
@@ -175,14 +186,11 @@ const Payment = ({ prevStep, formData }) => {
             transition={{ duration: 0.5 }}
             className="bg-white rounded-lg shadow-md p-8 w-1/2"
           >
-            <h2 className="text-2xl font-bold mb-4">Payment Successful!</h2>
-            <p className="text-lg mb-4">Your payment ID is: {paymentId}</p>
-            <button
-              className="bg-green-500 hover:bg-green-700 text-white font-bold py-2 px-4 rounded"
-              onClick={() => setIsOpen(false)}
-            >
-              Close
-            </button>
+            {paymentStatus ? (
+              <ThankYouPage transactionNumber={paymentId} />
+            ) : (
+              <PaymentFailedPage />
+            )}
           </motion.div>
         </motion.div>
       )}

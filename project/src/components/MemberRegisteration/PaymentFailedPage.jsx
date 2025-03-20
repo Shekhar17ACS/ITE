@@ -1,12 +1,13 @@
 import React, { useEffect, useState } from "react";
 import { motion } from "framer-motion";
 import { Sun, Moon } from "lucide-react";
+import { useNavigate } from 'react-router-dom';
 
-const PaymentFailedPage = () => {
-  const [transactionNumber] = useState(Math.floor(Math.random() * 1000000));
+const PaymentFailedPage = ({ transactionNumber }) => {
   const [attemptDate] = useState(new Date().toLocaleDateString());
   const [copied, setCopied] = useState(false);
   const [darkMode, setDarkMode] = useState(false);
+  const navigate = useNavigate();
 
   const handleCopy = () => {
     navigator.clipboard.writeText(transactionNumber.toString());
