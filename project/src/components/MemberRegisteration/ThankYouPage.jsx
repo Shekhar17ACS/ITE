@@ -2,16 +2,16 @@ import React, { useEffect, useState } from "react";
  
 import Confetti from "react-confetti";
 import { motion } from "framer-motion";
+import { useNavigate } from 'react-router-dom';
 
-
-const ThankYouPage = () => {
+const ThankYouPage = ({ transactionNumber }) => {
    
-  const [transactionNumber] = useState(Math.floor(Math.random() * 1000000));
   const [purchaseDate] = useState(new Date().toLocaleDateString());
   const [progress, setProgress] = useState(0);
   const [copied, setCopied] = useState(false);
   const [showConfetti, setShowConfetti] = useState(true);
   const [darkMode, setDarkMode] = useState(false);
+  const navigate = useNavigate();
 
   useEffect(() => {
     const timer = setInterval(() => {
