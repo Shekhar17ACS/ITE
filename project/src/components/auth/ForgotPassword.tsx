@@ -153,13 +153,17 @@ export function ForgotPassword() {
   const inputVariants = {
     focus: {
       scale: 1.02,
-      boxShadow: "0 0 0 3px rgba(99, 102, 241, 0.2)",
-      transition: { duration: 0.3, ease: "easeOut" },
+      boxShadow: "0 0 0 3px rgba(99, 102, 241, 0.3), 0 6px 14px rgba(0, 0, 0, 0.08)",
+      background: "linear-gradient(to bottom, rgba(255, 255, 255, 0.95), rgba(245, 245, 255, 0.95))",
+      borderColor: "rgba(99, 102, 241, 0.9)",
+      transition: { duration: 0.25, ease: "easeOut" },
     },
     blur: {
       scale: 1,
-      boxShadow: "0 0 0 0 rgba(99, 102, 241, 0)",
-      transition: { duration: 0.3, ease: "easeOut" },
+      boxShadow: "0 3px 8px rgba(0, 0, 0, 0.04)",
+      background: "linear-gradient(to bottom, rgba(255, 255, 255, 0.6), rgba(240, 240, 245, 0.6))",
+      borderColor: "rgba(209, 213, 219, 0.6)",
+      transition: { duration: 0.25, ease: "easeOut" },
     },
   };
 
@@ -200,7 +204,7 @@ export function ForgotPassword() {
           <motion.input
             variants={inputVariants}
             whileFocus="focus"
-            whileBlur="blur"
+            animate="blur" // Default state when not focused
             id="email"
             name="email"
             type="email"
@@ -208,7 +212,7 @@ export function ForgotPassword() {
             required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="block w-full rounded-xl border-0 py-3 px-5 bg-white/50 text-gray-900 shadow-md ring-1 ring-inset ring-gray-100 placeholder:text-gray-400 focus:ring-2 focus:ring-indigo-500 transition-all duration-300 sm:text-sm font-medium"
+            className="block w-full rounded-xl border py-3 px-5 text-gray-900 shadow-md placeholder:text-gray-400/70 focus:ring-0 transition-all duration-300 sm:text-sm font-medium outline-none appearance-none"
           />
         </motion.div>
 
