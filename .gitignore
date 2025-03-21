@@ -1,0 +1,28 @@
+# Byte-compiled / optimized / DLL files
+*.pyc
+*.pyo
+*.pyd
+
+# Python cache directories
+__pycache__/
+
+# Virtual environments
+venv/
+ENV/
+env/
+.venv/
+
+# Django migrations
+migrations/
+
+# Specific migration files (if needed)
+*/migrations/*.py
+!*/migrations/__init__.py
+
+# IDE settings (optional)
+.vscode/
+.idea/
+
+# System-specific files (optional)
+.DS_Store
+Thumbs.db
