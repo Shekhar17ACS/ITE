@@ -1,116 +1,3 @@
-// import { useState } from 'react';
-// import { useNavigate } from 'react-router-dom';
-// import { motion } from 'framer-motion';
-// import { Button } from '../ui/Button';
-// import { toast } from 'react-toastify';
-// import 'react-toastify/dist/ReactToastify.css';
-
-// export function LoginForm() {
-//   const navigate = useNavigate();
-//   const [isLoading, setIsLoading] = useState(false);
-//   const [email, setEmail] = useState('');
-//   const [password, setPassword] = useState('');
-
-//   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-//     e.preventDefault();
-//     setIsLoading(true);
-
-//     // Simulated API Call
-//     await new Promise(resolve => setTimeout(resolve, 1000));
-
-//     // Simulated Admin Login Validation
-//     if (email === 'admin@gmail.com' && password === 'admin') {
-//       toast.success('Login successful! Redirecting...', { autoClose: 2000 });
-      
-//       setTimeout(() => {
-//         navigate('/admin'); // Redirect to Admin Dashboard
-//       }, 2000);
-//     } else {
-//       toast.error('Invalid credentials! Please try again.');
-//     }
-
-//     setIsLoading(false);
-//   };
-
-//   return (
-//     <motion.div
-//       initial={{ opacity: 0, y: 20 }}
-//       animate={{ opacity: 1, y: 0 }}
-//       transition={{ duration: 0.5 }}
-//       className="mt-10 sm:mx-auto sm:w-full sm:max-w-sm"
-//     >
-//       <form className="space-y-6" onSubmit={handleSubmit}>
-//         <div>
-//           <label htmlFor="email" className="block text-sm font-medium leading-6 text-gray-900">
-//             Email address
-//           </label>
-//           <input
-//             id="email"
-//             name="email"
-//             type="email"
-//             autoComplete="email"
-//             required
-//             value={email}
-//             onChange={(e) => setEmail(e.target.value)}
-//             className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
-//           />
-//         </div>
-
-//         <div>
-//           <label htmlFor="password" className="block text-sm font-medium leading-6 text-gray-900">
-//             Password
-//           </label>
-//           <input
-//             id="password"
-//             name="password"
-//             type="password"
-//             autoComplete="current-password"
-//             required
-//             value={password}
-//             onChange={(e) => setPassword(e.target.value)}
-//             className="block w-full rounded-md border-0 py-1.5 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-blue-600 sm:text-sm sm:leading-6"
-//           />
-//         </div>
-
-//         <div className="flex items-center justify-between">
-//           <div className="flex items-center">
-//             <input
-//               id="remember-me"
-//               name="remember-me"
-//               type="checkbox"
-//               className="h-4 w-4 rounded border-gray-300 text-blue-600 focus:ring-blue-600"
-//             />
-//             <label htmlFor="remember-me" className="ml-2 block text-sm text-gray-900">
-//               Remember me
-//             </label>
-//           </div>
-
-//           <div className="text-sm">
-//             <a href="/forgot-password" className="font-semibold text-blue-600 hover:text-blue-500">
-//               Forgot password?
-//             </a>
-//           </div>
-//         </div>
-
-//         <div>
-//           <Button type="submit" className="w-full" isLoading={isLoading}>
-//             Sign in
-//           </Button>
-//         </div>
-//       </form>
-
-//       <p className="mt-10 text-center text-sm text-gray-500 mb-5">
-//         Not a member?{' '}
-//         <a href="/register" className="font-semibold leading-6 text-blue-600 hover:text-blue-500">
-//           Register now
-//         </a>
-//       </p>
-//     </motion.div>
-//   );
-// }
-
-
-
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
@@ -127,22 +14,42 @@ export function LoginForm() {
   const [otp, setOtp] = useState('');
   const [isOtpVerified, setIsOtpVerified] = useState(false);
   const [isOtpModalOpen, setIsOtpModalOpen] = useState(false);
+  const [loginMethod, setLoginMethod] = useState<'email' | 'otp' | null>(null);
 
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+  const handleEmailLogin = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsLoading(true);
+    setLoginMethod('email');
 
     await new Promise(resolve => setTimeout(resolve, 1000));
 
     if (email === 'admin@gmail.com' && password === 'admin') {
       toast.success('Login successful! Redirecting...', { autoClose: 2000 });
-      
+      setTimeout(() => {
+        navigate('/admin'); // Direct navigation, no OTP
+      }, 2000);
+    } else {
+      toast.error('Invalid credentials! Please try again.');
+    }
+
+    setIsLoading(false);
+  };
+
+  const handleOtpLogin = async (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setIsLoading(true);
+    setLoginMethod('otp');
+
+    await new Promise(resolve => setTimeout(resolve, 1000));
+
+    if (email === 'admin@gmail.com') {
+      toast.success('OTP sent successfully! Please verify...', { autoClose: 2000 });
       setTimeout(() => {
         setOtp('123456');
         setIsOtpModalOpen(true);
       }, 2000);
     } else {
-      toast.error('Invalid credentials! Please try again.');
+      toast.error('Invalid email! Please try again.');
     }
 
     setIsLoading(false);
@@ -162,6 +69,7 @@ export function LoginForm() {
   const handleResendOtp = () => {
     setTimeout(() => {
       setOtp('123456');
+      toast.info('OTP resent successfully!');
     }, 1000);
   };
 
@@ -200,13 +108,17 @@ export function LoginForm() {
   const inputVariants = {
     focus: {
       scale: 1.02,
-      boxShadow: "0 0 0 3px rgba(99, 102, 241, 0.2)",
-      transition: { duration: 0.3, ease: "easeOut" },
+      boxShadow: "0 0 0 3px rgba(99, 102, 241, 0.3), 0 6px 14px rgba(0, 0, 0, 0.08)",
+      background: "linear-gradient(to bottom, rgba(255, 255, 255, 0.95), rgba(245, 245, 255, 0.95))",
+      borderColor: "rgba(99, 102, 241, 0.9)",
+      transition: { duration: 0.25, ease: "easeOut" },
     },
     blur: {
       scale: 1,
-      boxShadow: "0 0 0 0 rgba(99, 102, 241, 0)",
-      transition: { duration: 0.3, ease: "easeOut" },
+      boxShadow: "0 3px 8px rgba(0, 0, 0, 0.04)",
+      background: "linear-gradient(to bottom, rgba(255, 255, 255, 0.6), rgba(240, 240, 245, 0.6))",
+      borderColor: "rgba(209, 213, 219, 0.6)",
+      transition: { duration: 0.25, ease: "easeOut" },
     },
   };
 
@@ -239,7 +151,7 @@ export function LoginForm() {
         <p className="mt-3 text-sm text-gray-500 font-medium">Access your premium account</p>
       </motion.div>
 
-      <form className="space-y-7 relative z-10" onSubmit={handleSubmit}>
+      <form className="space-y-7 relative z-10" onSubmit={loginMethod === 'email' ? handleEmailLogin : handleOtpLogin}>
         <motion.div variants={itemVariants}>
           <label htmlFor="email" className="block text-sm font-semibold text-gray-700 mb-2 tracking-wide">
             Email Address
@@ -247,7 +159,7 @@ export function LoginForm() {
           <motion.input
             variants={inputVariants}
             whileFocus="focus"
-            whileBlur="blur"
+            animate="blur" // Default state when not focused
             id="email"
             name="email"
             type="email"
@@ -255,7 +167,7 @@ export function LoginForm() {
             required
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="block w-full rounded-xl border-0 py-3 px-5 bg-white/50 text-gray-900 shadow-md ring-1 ring-inset ring-gray-100 placeholder:text-gray-400 focus:ring-2 focus:ring-indigo-500 transition-all duration-300 sm:text-sm font-medium"
+            className="block w-full rounded-xl border py-3 px-5 text-gray-900 shadow-md placeholder:text-gray-400/70 focus:ring-0 transition-all duration-300 sm:text-sm font-medium outline-none appearance-none"
           />
         </motion.div>
 
@@ -266,7 +178,7 @@ export function LoginForm() {
           <motion.input
             variants={inputVariants}
             whileFocus="focus"
-            // whileBlur="blur" 
+            animate="blur" // Default state when not focused
             id="password"
             name="password"
             type="password"
@@ -274,7 +186,7 @@ export function LoginForm() {
             required
             value={password}
             onChange={(e) => setPassword(e.target.value)}
-            className="block w-full rounded-xl border-0 py-3 px-5 bg-white/50 text-gray-900 shadow-md ring-1 ring-inset ring-gray-100 placeholder:text-gray-400 focus:ring-2 focus:ring-indigo-500 transition-all duration-300 sm:text-sm font-medium"
+            className="block w-full rounded-xl border py-3 px-5 text-gray-900 shadow-md placeholder:text-gray-400/70 focus:ring-0 transition-all duration-300 sm:text-sm font-medium outline-none appearance-none"
           />
         </motion.div>
 
@@ -302,19 +214,35 @@ export function LoginForm() {
           </a>
         </motion.div>
 
-        <motion.div variants={itemVariants}>
+        <motion.div variants={itemVariants} className="grid grid-cols-2 gap-6">
           <Button
             type="submit"
-            className="w-full bg-gradient-to-r from-indigo-600 via-indigo-700 to-blue-600 hover:from-indigo-700 hover:via-indigo-800 hover:to-blue-700 text-white py-3 rounded-xl font-semibold shadow-lg transition-all duration-500 transform hover:scale-105 hover:shadow-xl relative overflow-hidden"
-            isLoading={isLoading}
+            onClick={() => setLoginMethod('email')}
+            className="w-full bg-gradient-to-r from-indigo-600 via-indigo-700 to-blue-600 hover:from-indigo-700 hover:via-indigo-800 hover:to-blue-700 text-white py-3 rounded-xl font-semibold shadow-lg transition-all duration-500 transform hover:scale-105 hover:shadow-xl relative overflow-hidden focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-gray-50"
+            isLoading={isLoading && loginMethod === 'email'}
           >
             <motion.span
-              className="absolute inset-0 bg-white/10"
+              className="absolute inset-0 bg-white/15"
               initial={{ x: "-100%" }}
               whileHover={{ x: "100%" }}
               transition={{ duration: 0.4, ease: "easeOut" }}
             />
-            <span className="relative z-10">Sign in</span>
+            <span className="relative z-10">Login with Email</span>
+          </Button>
+
+          <Button
+            type="submit"
+            onClick={() => setLoginMethod('otp')}
+            className="w-full bg-gradient-to-r from-purple-600 via-purple-700 to-indigo-600 hover:from-purple-700 hover:via-purple-800 hover:to-indigo-700 text-white py-3 rounded-xl font-semibold shadow-lg transition-all duration-500 transform hover:scale-105 hover:shadow-xl relative overflow-hidden focus:outline-none focus:ring-2 focus:ring-purple-500 focus:ring-offset-2 focus:ring-offset-gray-50"
+            isLoading={isLoading && loginMethod === 'otp'}
+          >
+            <motion.span
+              className="absolute inset-0 bg-white/15"
+              initial={{ x: "-100%" }}
+              whileHover={{ x: "100%" }}
+              transition={{ duration: 0.4, ease: "easeOut" }}
+            />
+            <span className="relative z-10">Login with OTP</span>
           </Button>
         </motion.div>
       </form>
