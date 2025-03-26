@@ -1,128 +1,164 @@
+from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
+from django.utils.encoding import force_bytes, force_str
+from django.contrib.auth.tokens import default_token_generator
+from django.contrib.auth.hashers import make_password
+
+from rest_framework.views import APIView
+from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.authtoken.models import Token
 from rest_framework.views import APIView
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import authenticate
-from .helper import send_email_otp
 from .serializers import *
 from datetime import timedelta
 import random
 from django.core.cache import cache
 
+from django.utils import timezone
+from rest_framework import serializers, status
+from rest_framework.response import Response
+from rest_framework.views import APIView
+import random
+from datetime import timedelta
+
+from django.core.mail import send_mail
+from django.conf import settings
 
 
 
-class SignupAPIView(APIView):
-    permission_classes = [AllowAny]
-
-    def post(self, request):
-        data = request.data.copy()
-
-        if "otp" in data:
-            email = data.get("email")
-            otp_input = data.get("otp")
-            if not email or not otp_input:
-                return Response(
-                    {"error": "Both email and OTP are required for verification."},
-                    status=status.HTTP_400_BAD_REQUEST
-                )
-            try:
-                user = User.objects.get(email=email)
-            except User.DoesNotExist:
-                return Response(
-                    {"error": "User with this email does not exist."},
-                    status=status.HTTP_400_BAD_REQUEST
-                )
-
-            if user.otp != otp_input:
-                return Response(
-                    {"error": "Invalid OTP."},
-                    status=status.HTTP_400_BAD_REQUEST
-                )
-            if not user.otp_expires_at or timezone.now() > user.otp_expires_at:
-                return Response(
-                    {"error": "OTP has expired. Please request a new one."},
-                    status=status.HTTP_400_BAD_REQUEST
-                )
-
-            user.otp = None
-            user.otp_expires_at = None
-            user.is_active = True
-            user.save(update_fields=["otp", "otp_expires_at", "is_active"])
-
-            token, _ = Token.objects.get_or_create(user=user)
-            return Response({
-                "message": "Signup complete and OTP verified successfully.",
-                "token": token.key
-            }, status=status.HTTP_200_OK)
-
-        required_fields = ["name", "username", "email", "password", "confirm_password", "mobile_no"]
-        for field in required_fields:
-            if field not in data or not data[field]:
-                return Response(
-                    {"error": f"{field} is required."},
-                    status=status.HTTP_400_BAD_REQUEST
-                )
-
-        if data["password"] != data["confirm_password"]:
-            return Response(
-                {"error": "Passwords do not match."},
-                status=status.HTTP_400_BAD_REQUEST
-            )
-
-        if len(data["password"]) < 8:
-            return Response(
-                {"error": "Password must be at least 8 characters long."},
-                status=status.HTTP_400_BAD_REQUEST
-            )
-
-        if User.objects.filter(username=data["username"]).exists():
-            return Response(
-                {"error": "Username already exists."},
-                status=status.HTTP_400_BAD_REQUEST
-            )
-        if User.objects.filter(email=data["email"]).exists():
-            return Response(
-                {"error": "Email already registered."},
-                status=status.HTTP_400_BAD_REQUEST
-            )
-
-        hashed_password = make_password(data["password"])
-        data["password"] = hashed_password
-        data.pop("confirm_password", None)
-
-        serializer = SignupSerializer(data=data)
-        if not serializer.is_valid():
-            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
-
-        validated_data = serializer.validated_data
-        user = User.objects.create(
-            name=validated_data.get("name"),
-            username=validated_data.get("username"),
-            email=validated_data.get("email"),
-            mobile_no=validated_data.get("mobile_no"),
-            password=hashed_password,
-            is_active=False
-        )
-        otp_code = str(random.randint(100000, 999999))
-        user.otp = otp_code
-        user.otp_expires_at = timezone.now() + timedelta(minutes=5)
-        user.save(update_fields=["otp", "otp_expires_at"])
-
-        send_email_otp(user, otp_code)
-
-        return Response({
-            "message": "Signup initiated. An OTP has been sent to your email. Please verify to complete signup."
-        }, status=status.HTTP_201_CREATED)
 
 
 def send_email_otp(email, otp_code):
-    """Function to send OTP via email"""
-    subject = "Your Login OTP Code"
-    message = f"Your OTP code for login is: {otp_code}\n\nThis OTP is valid for 5 minutes."
-    from_email = 'shalender0101yaduvanshi@gmail.com'
+    subject = "Your OTP Code"
+    message = f"Your OTP for verification is: {otp_code}. It is valid for 5 minutes."
+    from_email = settings.DEFAULT_FROM_EMAIL
     recipient_list = [email]
-    send_mail(subject, message, from_email, recipient_list, fail_silently=False)
+
+    send_mail(subject, message, from_email, recipient_list)
+
+
+class SignupAPIView(APIView):
+    def post(self, request):
+        session = request.session
+        serializer = SignupSerializer(data=request.data)
+
+        if not serializer.is_valid():
+            return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
+        user = serializer.save()  # Save user with hashed password
+        user.is_active = False  # User is inactive until OTP verification
+        user.save(update_fields=["is_active"])
+
+        # Generate OTP and store in session
+        otp_code = str(random.randint(100000, 999999))
+        now = timezone.now()
+        session.update({
+            "email": user.email,
+            "otp": otp_code,
+            "otp_expires_at": (now + timedelta(minutes=5)).isoformat(),  # Convert to string
+            "otp_requests": [now.isoformat()]
+        })
+        session.modified = True
+
+        # Send OTP email
+        send_email_otp(user.email, otp_code)
+
+        return Response({"message": "Signup successful. OTP sent to your email."}, status=status.HTTP_201_CREATED)
+
+
+class VerifyOTPAPIView(APIView):
+    def post(self, request):
+        session = request.session
+        otp_input = request.data.get("otp")
+        email = session.get("email")
+
+        if not email or not otp_input:
+            return Response({"error": "Both email and OTP are required."}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            user = User.objects.get(email=email)
+        except User.DoesNotExist:
+            return Response({"error": "User with this email does not exist."}, status=status.HTTP_400_BAD_REQUEST)
+
+        stored_otp = session.get("otp")
+        otp_expiry_str = session.get("otp_expires_at")
+
+        if not stored_otp or stored_otp != otp_input:
+            return Response({"error": "Invalid OTP."}, status=status.HTTP_400_BAD_REQUEST)
+
+        if not otp_expiry_str:
+            return Response({"error": "OTP expiration time not found. Please request a new OTP."},
+                            status=status.HTTP_400_BAD_REQUEST)
+
+        # Convert string back to datetime
+        otp_expiry = timezone.datetime.fromisoformat(otp_expiry_str)
+
+        if timezone.now() > otp_expiry:
+            return Response({"error": "OTP has expired. Request a new OTP."}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Activate user and generate application ID
+        user.is_active = True
+        if not user.application_id:
+            user.application_id = user.generate_application_id()
+        user.save(update_fields=["is_active", "application_id"])
+
+        # Clear session data
+        for key in ["otp", "otp_expires_at", "email"]:
+            session.pop(key, None)
+        session.modified = True
+
+        # Send email to the user
+        subject = "Your Application ID"
+        message = f"Dear {user.username},\n\nYour application ID is: {user.application_id}.\n\nThank you for registering!"
+        from_email = settings.DEFAULT_FROM_EMAIL
+        recipient_list = [user.email]
+
+        send_mail(subject, message, from_email, recipient_list)
+
+        return Response({
+            "message": "OTP verified. Signup complete. Application ID has been sent to your email.",
+            "application_id": user.application_id
+        }, status=status.HTTP_200_OK)
+
+class ResendOTPAPIView(APIView):
+    def post(self, request):
+        session = request.session
+        email = session.get("email") or request.data.get("email")  # Use session email or request body email
+
+        if not email:
+            return Response({"error": "Email is required."}, status=status.HTTP_400_BAD_REQUEST)
+
+        try:
+            user = User.objects.get(email=email)
+        except User.DoesNotExist:
+            return Response({"error": "User with this email does not exist."}, status=status.HTTP_400_BAD_REQUEST)
+
+        otp_requests = session.get("otp_requests", [])
+        now = timezone.now()
+
+        # Convert stored timestamp strings to datetime objects
+        otp_requests = [timezone.datetime.fromisoformat(t) if isinstance(t, str) else t for t in otp_requests]
+
+        # Remove expired requests (older than 10 minutes)
+        otp_requests = [t for t in otp_requests if now - t < timedelta(minutes=10)]
+
+        if len(otp_requests) >= 3:
+            return Response({"error": "Too many OTP requests. Try again later."},
+                            status=status.HTTP_429_TOO_MANY_REQUESTS)
+
+        # Generate and send new OTP
+        otp_code = str(random.randint(100000, 999999))
+        session["email"] = email
+        session["otp"] = otp_code
+        session["otp_expires_at"] = (now + timedelta(minutes=5)).isoformat()  # Convert to string for JSON serialization
+        otp_requests.append(now.isoformat())  # Store as string to prevent serialization error
+        session["otp_requests"] = otp_requests
+        session.modified = True
+
+        send_email_otp(email, otp_code)
+
+        return Response({"message": "New OTP sent to your email."}, status=status.HTTP_200_OK)
 
 class LoginView(APIView):
     def post(self, request):
@@ -205,50 +241,6 @@ class LoginView(APIView):
             "email": user.email
         }, status=status.HTTP_200_OK)
 
-# class ForgotPasswordView(APIView):
-#     def post(self, request):
-#         serializer = ForgotPasswordSerializer(data=request.data)
-#         if serializer.is_valid():
-#             email = serializer.validated_data['email']
-#             user = User.objects.filter(email=email).first()
-#             if user:
-#                 send_otp(user)
-#                 return Response({"message": "OTP sent to email, SMS, and WhatsApp"}, status=status.HTTP_200_OK)
-#             return Response({"error": "User not found"}, status=status.HTTP_404_NOT_FOUND)
-
-
-# class ResetPasswordView(APIView):
-#     def post(self, request):
-#         serializer = ResetPasswordSerializer(data=request.data)
-#         if serializer.is_valid():
-#             email = serializer.validated_data['email']
-#             otp = serializer.validated_data['otp']
-#             new_password = serializer.validated_data['new_password']
-#
-#             user = User.objects.filter(email=email).first()
-#             if user and validate_otp(user, otp):
-#                 user.set_password(new_password)
-#                 user.save()
-#                 return Response({"message": "Password reset successful"}, status=status.HTTP_200_OK)
-#             return Response({"error": "Invalid or expired OTP"}, status=status.HTTP_400_BAD_REQUEST)
-
-
-
-from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
-from django.utils.encoding import force_bytes, force_str
-from django.utils import timezone
-from django.contrib.auth.tokens import default_token_generator
-from django.contrib.auth.hashers import make_password
-from django.core.mail import send_mail
-from django.conf import settings
-from rest_framework.views import APIView
-from rest_framework.permissions import AllowAny, IsAuthenticated
-from rest_framework.response import Response
-from rest_framework import status
-from .models import User
-from .serializers import ResetPasswordSerializer
-
-
 class RequestPasswordResetAPIView(APIView):
     """ API to request password reset for logged-in user """
 
@@ -314,3 +306,7 @@ class ResetPasswordAPIView(APIView):
         user.save(update_fields=["password"])
 
         return Response({"message": "Password has been reset successfully."}, status=status.HTTP_200_OK)
+
+
+
+###########################################################################################################
