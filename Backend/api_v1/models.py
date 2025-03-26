@@ -1,3 +1,4 @@
+import random
 import uuid
 
 from django.contrib.auth.base_user import BaseUserManager, AbstractBaseUser
@@ -5,10 +6,17 @@ from django.contrib.auth.models import AbstractUser, PermissionsMixin, Group, Pe
 from django.db import models
 
 
+
+class Title(models.Model):
+    name = models.CharField(max_length=30)
+
 class User(AbstractUser):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    application_id = models.CharField(max_length=15, null=True, blank=True, unique=True, editable=False)
+    title = models.OneToOneField("Title", on_delete=models.SET_NULL, null=True, blank=True)
     name = models.CharField(max_length=200, null=True, blank=True)
-    username = models.CharField(max_length=150, unique=True, null=True, blank=True)
+    middle_name = models.CharField(max_length=50, null=True, blank=True)
+    last_name = models.CharField(max_length=50, null=True, blank=True)
     mobile_no = models.CharField(max_length=20, blank=True)
     email = models.EmailField(unique=True)
     password = models.CharField(max_length=100)
@@ -35,6 +43,13 @@ class User(AbstractUser):
     groups = models.ManyToManyField(Group, related_name="custom_user_groups", blank=True)
     user_permissions = models.ManyToManyField(Permission, related_name="custom_user_permissions", blank=True)
     request_otp = models.BooleanField(default=False)
+
+    def generate_application_id(self):
+        """Generates a unique application ID."""
+        while True:
+            app_id = f"APP{random.randint(100000, 999999)}"
+            if not User.objects.filter(application_id=app_id).exists():
+                return app_id
 
     def __str__(self):
         return self.email
