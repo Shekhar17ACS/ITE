@@ -9,20 +9,24 @@ import {toast} from "react-toastify"
 // });
 
 export const SignUp = createAsyncThunk("user/SignUp", async (data, { rejectWithValue }) => {
-    try {
-      const response = await Resister(data);
-      console.log("response", response);
-  
-      if (response.status) {
-        return response; // ✅ Ensure the response is returned properly
-      } else {
-        return rejectWithValue(response.message || "Signup failed"); // ✅ Handle API failure
-      }
-    } catch (error) {
-      console.log("error", error);
-      return rejectWithValue(error.message || "Something went wrong"); // ✅ Return error message properly
+  try {
+    const response = await Resister(data);
+    console.log("response", response);
+    if (response.status === 200) {
+      return response;
+    } else {
+      return rejectWithValue(response.message || "Signup failed");
     }
-  });
+  } catch (error) {
+    console.error("error", error);
+    if (error.response) {
+      console.error("error response", error.response);
+      return rejectWithValue(error.response.data.message || "Something went wrong");
+    } else {
+      return rejectWithValue(error.message || "Something went wrong");
+    }
+  }
+});
   
 
 const initialState = {
@@ -30,10 +34,13 @@ const initialState = {
     data:[],
   formData: {
     email: "",
+    title: "",
     name:"",
+    middlename:"",
+    lastname:"",
     password: "",
     confirm_password: "",
-    username: "",
+    // username: "",
     mobile_no: "",
   },
 };

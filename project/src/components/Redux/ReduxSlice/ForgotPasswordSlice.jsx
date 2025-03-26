@@ -1,17 +1,34 @@
-// import { createSlice } from '@reduxjs/toolkit';
+// import { createSlice, createAsyncThunk } from '@reduxjs/toolkit';
 // import { forgotPassword, resetPassword } from "../../../Services/ApiServices/ApiService";
 // import { toast } from 'react-toastify';
 
 // const initialState = {
-//   email: '',
-//   otp: '',
+//   email: "",
+//   otp: "",
 //   isOtpVerified: false,
 //   isLoading: false,
 //   isOtpModalOpen: false,
-//   newPassword: '',
-//   confirmPassword: '',
+//   newPassword: "",
+//   confirmPassword: "",
 //   error: null,
+//   data: [],
 // };
+
+// export const forgotPasswordAsync = createAsyncThunk(
+//   'forgotPassword/forgotPasswordAsync',
+//   async (email) => {
+//     const response = await forgotPassword(email);
+//     return response;
+//   }
+// );
+
+// export const resetPasswordAsync = createAsyncThunk(
+//   'forgotPassword/resetPasswordAsync',
+//   async (data) => {
+//     const response = await resetPassword(data);
+//     return response;
+//   }
+// );
 
 // const forgotPasswordSlice = createSlice({
 //   name: 'forgotPassword',
@@ -43,29 +60,29 @@
 //     },
 //   },
 //   extraReducers: (builder) => {
-//     builder.addCase(forgotPassword.pending, (state) => {
+//     builder.addCase(forgotPasswordAsync.pending, (state) => {
 //       state.isLoading = true;
 //     });
-//     builder.addCase(forgotPassword.fulfilled, (state, action) => {
+//     builder.addCase(forgotPasswordAsync.fulfilled, (state, action) => {
 //       state.isLoading = false;
 //       state.otp = action.payload.otp;
 //       state.isOtpModalOpen = true;
 //       toast.success('OTP sent successfully!');
 //     });
-//     builder.addCase(forgotPassword.rejected, (state, action) => {
+//     builder.addCase(forgotPasswordAsync.rejected, (state, action) => {
 //       state.isLoading = false;
 //       state.error = action.error.message;
 //       toast.error('Error sending OTP!');
 //     });
-//     builder.addCase(resetPassword.pending, (state) => {
+//     builder.addCase(resetPasswordAsync.pending, (state) => {
 //       state.isLoading = true;
 //     });
-//     builder.addCase(resetPassword.fulfilled, (state, action) => {
+//     builder.addCase(resetPasswordAsync.fulfilled, (state, action) => {
 //       state.isLoading = false;
 //       state.isOtpVerified = true;
 //       toast.success('Password reset successfully!');
 //     });
-//     builder.addCase(resetPassword.rejected, (state, action) => {
+//     builder.addCase(resetPasswordAsync.rejected, (state, action) => {
 //       state.isLoading = false;
 //       state.error = action.error.message;
 //       toast.error('Error resetting password!');
