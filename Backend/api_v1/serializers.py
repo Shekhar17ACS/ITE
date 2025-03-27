@@ -1,6 +1,6 @@
 from django.contrib.auth.password_validation import validate_password
 from rest_framework import serializers
-from .models import User
+from .models import *
 
 
 class UserSerializer(serializers.ModelSerializer):
@@ -53,3 +53,7 @@ class ResetPasswordSerializer(serializers.Serializer):
         return data
 
 
+class PaymentSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Payment
+        fields = "__all__"

@@ -53,3 +53,15 @@ class User(AbstractUser):
 
     def __str__(self):
         return self.email
+    
+
+class Payment(models.Model):
+    order_id = models.CharField(max_length=255, unique=True)
+    payment_id = models.CharField(max_length=255, null=True, blank=True)
+    receipt = models.CharField(max_length=255, unique=True)
+    amount = models.DecimalField(max_digits=10, decimal_places=2)
+    status = models.CharField(max_length=20, choices=[("Created", "Created"), ("Success", "Success"), ("Failed", "Failed")], default="Created")
+    created_at = models.DateTimeField(auto_now_add=True)
+
+    def _str_(self):
+        return self.order_id

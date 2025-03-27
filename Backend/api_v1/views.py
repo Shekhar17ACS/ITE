@@ -310,3 +310,68 @@ class ResetPasswordAPIView(APIView):
 
 
 ###########################################################################################################
+
+import razorpay, time
+from django.conf import settings
+from rest_framework.response import Response
+from rest_framework.views import APIView
+from .models import Payment
+
+razorpay_client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
+
+class CreateOrderAPIView(APIView):
+    def post(self, request):
+        amount = request.data.get("amount")
+        
+        if not amount:
+            return Response({"error": "Amount is required"}, status=status.HTTP_400_BAD_REQUEST)
+
+        amount_paise = int(amount) * 100  
+
+        receipt_number = f"receipt_{int(time.time())}"
+
+        order_data = {
+            "amount": amount_paise,
+            "currency": "INR",
+            "payment_capture": 1,
+            "receipt": receipt_number, 
+        }
+
+        order = razorpay_client.order.create(order_data)
+
+        Payment.objects.create(
+            order_id=order["id"],
+            receipt=receipt_number,
+            amount=amount,
+            status="Created"
+        )
+
+        return Response({
+            "order_id": order["id"],
+            "amount": order["amount"],
+            "currency": order["currency"],
+            "key": settings.RAZORPAY_KEY_ID,
+            "receipt": receipt_number, 
+        })
+
+class VerifyPaymentAPIView(APIView):
+    def post(self, request):
+        razorpay_order_id = request.data.get("razorpay_order_id")
+        razorpay_payment_id = request.data.get("razorpay_payment_id")
+        razorpay_signature = request.data.get("razorpay_signature")
+
+        try:
+            razorpay_client.utility.verify_payment_signature({
+                "razorpay_order_id": razorpay_order_id,
+                "razorpay_payment_id": razorpay_payment_id,
+                "razorpay_signature": razorpay_signature,
+            })
+
+            payment = Payment.objects.get(order_id=razorpay_order_id)
+            payment.status = "Success"
+            payment.payment_id = razorpay_payment_id
+            payment.save()
+
+            return Response({"message": "Payment successful!"})
+        except:
+            return Response({"message": "Payment verification failed!"}, status=400)
