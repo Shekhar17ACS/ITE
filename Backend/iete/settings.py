@@ -46,7 +46,8 @@ INSTALLED_APPS = [
 
 
 AUTH_USER_MODEL = 'api_v1.User'
-FRONTEND_URL = "http://127.0.0.1:8000/api/v1"
+FRONTEND_URL = "http://127.0.0.1:8000/api/v1/"
+
 DEFAULT_FROM_EMAIL = "shalender0101yaduvanshi@gmail.com"
 
 RAZORPAY_KEY_ID = "your_razorpay_key_id"
@@ -175,3 +176,8 @@ EMAIL_PORT=587
 EMAIL_USE_TLS=True
 EMAIL_HOST_USER='shalender0101yaduvanshi@gmail.com'
 EMAIL_HOST_PASSWORD="uxsx hjih inxp qjiv"
+
+
+SESSION_COOKIE_HTTPONLY = False  
+SESSION_COOKIE_SAMESITE = 'None'  
+SESSION_COOKIE_SECURE = True  

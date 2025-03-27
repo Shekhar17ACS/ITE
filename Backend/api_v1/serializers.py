@@ -6,14 +6,14 @@ from .models import *
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'email', 'mobile_no', 'name']
+        fields = ['id', 'email', 'mobile_no', 'name', "middle_name", "last_name", "title"]
 
 class SignupSerializer(serializers.ModelSerializer):
     confirm_password = serializers.CharField(write_only=True, required=True)
 
     class Meta:
         model = User
-        fields = ["name", "email", "password", "confirm_password", "mobile_no"]
+        fields = ["name", "email", "password", "confirm_password", "mobile_no", "middle_name", "last_name", "title"]
         extra_kwargs = {"password": {"write_only": True}}
 
     def validate(self, data):
