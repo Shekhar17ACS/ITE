@@ -49,6 +49,9 @@ AUTH_USER_MODEL = 'api_v1.User'
 FRONTEND_URL = "http://127.0.0.1:8000/api/v1"
 DEFAULT_FROM_EMAIL = "shalender0101yaduvanshi@gmail.com"
 
+RAZORPAY_KEY_ID = "your_razorpay_key_id"
+RAZORPAY_KEY_SECRET = "your_razorpay_secret"
+
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
