@@ -7,7 +7,9 @@ const ResetPassword = `${APiUrl}reset-password/`;
 
 const getApiData = async (apiUrl) => {
   try {
-    const response = await axios.get(apiUrl);
+    const response = await axios.get(apiUrl,{
+      withCredentials:"include"
+    });
     return response.data; // Return only relevant data
   } catch (error) {
     console.error("Error fetching data:", error.message);
@@ -19,7 +21,9 @@ const getApiData = async (apiUrl) => {
 const postData = async (apiUrl, data) => {
   console.log("data", data, apiUrl);
   try {
-    const response = await axios.post(apiUrl, data);
+    const response = await axios.post(apiUrl, data, {
+      withCredentials:"include"
+    });
     console.log("hlo", response);
     return response.data;
   } catch (error) {
@@ -31,7 +35,9 @@ const postData = async (apiUrl, data) => {
 // Function to fetch data by ID (GET request)
 const getDataWithId = async (apiUrl, id) => {
   try {
-    const response = await axios.get(`${apiUrl}/${id}`);
+    const response = await axios.get(`${apiUrl}/${id}`,{
+      withCredentials:"include"
+    });
     return response.data;
   } catch (error) {
     console.error("Error fetching data by ID:", error.message);
@@ -41,7 +47,7 @@ const getDataWithId = async (apiUrl, id) => {
 
 // ===========================SignUp ===================
 export const Resister = (data) => {
-  const apiUrl = signUp;
+  const apiUrl = `${APiUrl}signup/`;
   return postData(apiUrl, data);
 };
 
@@ -62,3 +68,10 @@ export const login = (data) => {
     const apiUrl = signIn;
     return postData(apiUrl, data)
 }
+
+
+export const OtpValidate = (data) => {
+   const apiUrl = `${APiUrl}verify-otp/`
+  return postData(apiUrl, data)
+}
+

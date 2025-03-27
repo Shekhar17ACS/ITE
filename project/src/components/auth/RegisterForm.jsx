@@ -24,7 +24,7 @@ export function RegisterForm() {
   const handleSubmit = (e) => {
     e.preventDefault();
     dispatch(SignUp(formdata));
-    dispatch(resetFormData());
+    // dispatch(resetFormData());
     setOtpModel(true);
     setOtp("123456");
     setIsOtpModalOpen(true);
@@ -196,9 +196,9 @@ export function RegisterForm() {
                   Middle Name
                 </label>
                 <motion.input
-                  name="middlename"
+                  name="middle_name"
                   type="text"
-                  value={formdata?.middlename || ""}
+                  value={formdata?.middle_name || ""}
                   onChange={handleChange}
                   className="w-full px-4 py-2.5 rounded-lg bg-white border border-gray-200 text-gray-800 placeholder-gray-400 focus:ring-2 focus:ring-blue-400 focus:border-transparent outline-none transition-all duration-300 shadow-sm hover:shadow-md"
                   placeholder="Enter your middle name (optional)"
@@ -213,10 +213,10 @@ export function RegisterForm() {
                   Last Name
                 </label>
                 <motion.input
-                  name="lastname"
+                  name="last_name"
                   type="text"
                   required
-                  value={formdata?.lastname || ""}
+                  value={formdata?.last_name || ""}
                   onChange={handleChange}
                   className="w-full px-4 py-2.5 rounded-lg bg-white border border-gray-200 text-gray-800 placeholder-gray-400 focus:ring-2 focus:ring-blue-400 focus:border-transparent outline-none transition-all duration-300 shadow-sm hover:shadow-md"
                   placeholder="Enter your last anme"

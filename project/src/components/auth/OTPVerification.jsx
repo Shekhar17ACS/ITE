@@ -1,8 +1,9 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Button } from '../ui/Button';
 import { toast } from 'react-toastify';
-
+import { postOtp,UpdateFormData } from '../Redux/ReduxSlice/OtpSlice';
+import { useDispatch, useSelector } from 'react-redux';
 
 
 const OTPVerification = ({
@@ -15,7 +16,15 @@ const OTPVerification = ({
   const [otp, setOtp] = useState(['', '', '', '', '', '']); // Array for 6 OTP digits
   const [error, setError] = useState(null);
   const [resent, setResent] = useState(false);
+  const dispatch = useDispatch();
 
+  const[otplength,setOtplength] = useState(null)
+  const {formData} = useSelector((state)=>state.otp)
+  const {formData:formDatawithemail} = useSelector((state)=>state.user)
+
+
+
+     
   const handleVerify = () => {
     const otpString = otp.join('');
     if (otpString.length !== 6) {
@@ -30,6 +39,10 @@ const OTPVerification = ({
     onVerify(otpString);
   };
 
+  const handleChange = ()=>{
+
+  }
+
   const handleResend = () => {
     if (resent) {
       setError('You have already resent the OTP');
@@ -40,19 +53,59 @@ const OTPVerification = ({
     setResent(true);
   };
 
-  const handleInputChange = (index, value) => {
-    if (/[^0-9]/.test(value)) return; // Allow only numbers
-    const newOtp = [...otp];
-    newOtp[index] = value.slice(-1); // Take only the last character
-    setOtp(newOtp);
 
-    // Auto-focus next input
+  const handleInputChange = (e, index) => {
+    const { value } = e.target;
+
+   
+    if (!/^[0-9]?$/.test(value)) return;
+
+   
+    let otpArry = formData?.otp ? formData.otp.split("") : new Array(6).fill("");
+
+    
+    otpArry[index] = value;
+    setOtplength(otpArry?.length)
+    const coverttoString = otpArry.join("");
+    dispatch(UpdateFormData({ name: "otp", value: coverttoString }));
+
+    
     if (value && index < 5) {
-      const nextInput = document.getElementById(`otp-${index + 1}`);
-      nextInput?.focus();
+        document.getElementById(`otp-${index + 1}`).focus();
     }
-  };
+};
 
+
+
+console.log("otplength",otplength)
+
+
+
+    const varifyOtp = ()=>{
+       dispatch(postOtp(formData))
+    }
+
+
+
+   useEffect(()=>{
+     dispatch(UpdateFormData({name:"email",value:formDatawithemail?.email}))
+   },[formDatawithemail])
+
+
+  // const handleInputChange = (index, value) => {
+  //   if (/[^0-9]/.test(value)) return; // Allow only numbers
+  //   const newOtp = [...otp];
+  //   newOtp[index] = value.slice(-1); // Take only the last character
+  //   setOtp(newOtp);
+
+  //   // Auto-focus next input
+  //   if (value && index < 5) {
+  //     const nextInput = document.getElementById(`otp-${index + 1}`);
+  //     nextInput?.focus();
+  //   }
+  // };
+
+  console.log("3333",formDatawithemail)
   const handleKeyDown = (index, e) => {
     if (e.key === 'Backspace' && !otp[index] && index > 0) {
       const prevInput = document.getElementById(`otp-${index - 1}`);
@@ -105,6 +158,8 @@ const OTPVerification = ({
     },
   };
 
+console.log("88888",formData)
+ 
 
   console.log("hiii",isOtpModalOpen)
 
@@ -180,26 +235,20 @@ const OTPVerification = ({
            Verify OTP
          </motion.h2>
  
-         <motion.div
-           variants={itemVariants}
-           className="flex justify-center gap-5 mb-14 relative z-10"
-         >
-           {otp.map((digit, index) => (
-             <motion.input
-               key={index}
-               id={`otp-${index}`}
-               type="text"
-               value={digit}
-               onChange={(e) => handleInputChange(index, e.target.value)}
-               onKeyDown={(e) => handleKeyDown(index, e)}
-               maxLength={1}
-               variants={inputVariants}
-               whileFocus="focus"
-               animate="blur"
-               className="w-14 h-14 text-center rounded-xl border py-2 bg-white/70 text-gray-900 shadow-md placeholder:text-gray-400/70 focus:ring-0 transition-all duration-300 text-xl font-medium outline-none appearance-none"
-             />
-           ))}
-         </motion.div>
+<motion.div className="flex justify-center gap-5 mb-14 relative z-10">
+  {[...Array(6)].map((_, index) => (
+    <motion.input
+      key={index}
+      id={`otp-${index}`}
+      type="text"
+      name="otp"
+      value={formData?.otp?.[index] || ""}
+      onChange={(e) => handleInputChange(e, index)}
+      maxLength={1}
+      className="w-14 h-14 text-center rounded-xl border py-2 bg-white/70 text-gray-900 shadow-md placeholder:text-gray-400/70 focus:ring-0 transition-all duration-300 text-xl font-medium outline-none appearance-none"
+    />
+  ))}
+</motion.div>
  
          {error && (
            <motion.p
@@ -216,7 +265,7 @@ const OTPVerification = ({
          >
            <Button
              type="button"
-             onClick={handleVerify}
+             onClick={varifyOtp}
              isLoading={isLoading}
              className="w-full bg-gradient-to-r from-indigo-600 via-indigo-700 to-blue-600 hover:from-indigo-700 hover:via-indigo-800 hover:to-blue-700 text-white py-3 rounded-xl font-semibold shadow-lg transition-all duration-500 transform hover:scale-105 hover:shadow-xl relative overflow-hidden focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:ring-offset-2 focus:ring-offset-white/50"
            >

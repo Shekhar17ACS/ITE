@@ -1,16 +1,18 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { Resister } from "../../../Services/ApiServices/ApiService";
 import {toast} from "react-toastify"
-
+import { OtpValidate } from "../../../Services/ApiServices/ApiService";
 // Async Thunk Action (API Call Example)
 // export const fetchUser = createAsyncThunk("user/fetchUser", async (userId) => {
 //   const response = await fetch(`https://jsonplaceholder.typicode.com/users/${userId}`);
 //   return response.json();
 // });
 
-export const SignUp = createAsyncThunk("user/SignUp", async (data, { rejectWithValue }) => {
+
+
+
+export const postOtp = createAsyncThunk("otp/postOtp", async (data, { rejectWithValue }) => {
   try {
-    const response = await Resister(data);
+    const response = await OtpValidate(data);
     console.log("response", response);
     if (response.status === 200) {
       return response;
@@ -34,19 +36,12 @@ const initialState = {
     data:[],
   formData: {
     email: "",
-    title: "",
-    name:"",
-    middle_name:"",
-    last_name:"",
-    password: "",
-    confirm_password: "",
-    // username: "",
-    mobile_no: "",
+    otp:""
   },
 };
 
-const userSlice = createSlice({
-  name: "user",
+const otpSlice = createSlice({
+  name: "otp",
   initialState,
   reducers: {
     UpdateFormData: (state, action) => {
@@ -59,16 +54,16 @@ const userSlice = createSlice({
 
   extraReducers: (builder) => {
     builder
-      .addCase(SignUp.pending, (state) => {
+      .addCase(postOtp.pending, (state) => {
         state.loading = true;
       })
-      .addCase(SignUp.fulfilled, (state, action) => {
+      .addCase(postOtp.fulfilled, (state, action) => {
         console.log("action.payload",action.payload)
         state.loading = false;
         state.data = action.payload?.data || action.payload; // ✅ Ensure `data` is properly assigned
-        toast.success(action.payload?.message || "Signup successful!");
+        toast.success(action.payload?.message || "postOtp successful!");
       })
-      .addCase(SignUp.rejected, (state, action) => {
+      .addCase(postOtp.rejected, (state, action) => {
          console.log("111",action)
         state.loading = false;
         state.error = action.error.message;
@@ -77,5 +72,6 @@ const userSlice = createSlice({
   },
 });
 
-export const { UpdateFormData,resetFormData } = userSlice.actions;
-export default userSlice.reducer;
+
+export const { UpdateFormData,resetFormData } = otpSlice.actions;
+export default otpSlice.reducer;
