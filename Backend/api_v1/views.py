@@ -71,10 +71,13 @@ class VerifyOTPAPIView(APIView):
     def post(self, request):
         session = request.session
         otp_input = request.data.get("otp")
-        email = session.get("email")
+        email = request.data.get("email")
 
-        if not email or not otp_input:
-            return Response({"error": "Both email and OTP are required."}, status=status.HTTP_400_BAD_REQUEST)
+        if not email:
+            return Response({"error": "Email is required"}, status=status.HTTP_400_BAD_REQUEST)
+
+        if not otp_input:
+            return Response({"error": "Otp is required"}, status=status.HTTP_400_BAD_REQUEST)
 
         try:
             user = User.objects.get(email=email)
@@ -110,7 +113,7 @@ class VerifyOTPAPIView(APIView):
 
         # Send email to the user
         subject = "Your Application ID"
-        message = f"Dear {user.username},\n\nYour application ID is: {user.application_id}.\n\nThank you for registering!"
+        message = f"Dear {user.name},\n\nYour application ID is: {user.application_id}.\n\nThank you for registering!"
         from_email = settings.DEFAULT_FROM_EMAIL
         recipient_list = [user.email]
 
