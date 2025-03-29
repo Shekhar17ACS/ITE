@@ -8,7 +8,7 @@ import { Contact } from './components/Contact';
 import { LoginForm } from './components/auth/LoginForm';
 import { RegisterForm } from './components/auth/RegisterForm';
 import { MembershipForm } from './components/membership/MembershipForm';
-import { Dashboard } from './components/admin/Dashboard';
+// import { Dashboard } from './components/admin/Dashboard';
 import { LoadingSpinner } from './components/LoadingSpinner';
 import { Suspense } from 'react';
 import { ToastContainer } from 'react-toastify';
@@ -28,7 +28,7 @@ function App() {
         <div className="min-h-screen bg-gray-50 flex flex-col">
         <ToastContainer />
           <Toaster position="top-right" />
-          <Header />
+          {/* <Header /> */}
           <main className="flex-grow">
             <Routes>
               <Route path="/" element={<Home />} />
@@ -41,14 +41,13 @@ function App() {
 
               {/* <Route path="/admin" element={<Dashboard />} /> */}
               <Route path="/admin" element={<Userdashboard />} />
-=======
-//               <Route path="/admin" element={<Dashboard />} />
+         {/* <Route path="/admin" element={<Dashboard />} /> */}
 
               <Route path="/forgot-password" element={<ForgotPassword />} />
               <Route path="/eligibility-check" element={<EligibilityCheck />} /> 
             </Routes>
           </main>
-          <Footer />
+          {/* <Footer />  */}
         </div>
       </Suspense>
     </Router>
