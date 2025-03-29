@@ -1,6 +1,7 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
-import { Resister } from "../../../Services/ApiServices/ApiService";
+import { login } from "../../../Services/ApiServices/ApiService";
 import {toast} from "react-toastify"
+// import { login} from "../../../Services/ApiServices/ApiService";
 
 // Async Thunk Action (API Call Example)
 // export const fetchUser = createAsyncThunk("user/fetchUser", async (userId) => {
@@ -8,23 +9,18 @@ import {toast} from "react-toastify"
 //   return response.json();
 // });
 
-export const SignUp = createAsyncThunk("user/SignUp", async (data, { rejectWithValue }) => {
+export const Login = createAsyncThunk("LoginUser/Login", async (data, { rejectWithValue }) => {
   try {
-    const response = await Resister(data);
+    console.log("data",data)
+    const response = await login(data);
     console.log("response", response);
-    if (response.status === 200) {
+    if (response.success) {
       return response;
     } else {
       return rejectWithValue(response.message || "Signup failed");
     }
   } catch (error) {
-    console.error("error", error);
-    if (error.response) {
-      console.error("error response", error.response);
-      return rejectWithValue(error.response.data.message || "Something went wrong");
-    } else {
-      return rejectWithValue(error.message || "Something went wrong");
-    }
+    return rejectWithValue(error.message || "Signup failed");
   }
 });
   
@@ -34,19 +30,15 @@ const initialState = {
     data:[],
   formData: {
     email: "",
-    title: "",
-    name:"",
-    middle_name:"",
-    last_name:"",
     password: "",
-    confirm_password: "",
+    // confirm_password: "",
     // username: "",
-    mobile_no: "",
+    // mobile_no: "",
   },
 };
 
-const userSlice = createSlice({
-  name: "user",
+const LoginSlice = createSlice({
+  name: "LoginUser",
   initialState,
   reducers: {
     UpdateFormData: (state, action) => {
@@ -59,22 +51,24 @@ const userSlice = createSlice({
 
   extraReducers: (builder) => {
     builder
-      .addCase(SignUp.pending, (state) => {
+      .addCase(Login.pending, (state) => {
         state.loading = true;
       })
-      .addCase(SignUp.fulfilled, (state, action) => {
+      .addCase(Login.fulfilled, (state, action) => {
         console.log("action.payload",action.payload)
         state.loading = false;
         state.data = action.payload?.data || action.payload; // ✅ Ensure `data` is properly assigned
+        toast.success("user Login successfully")
        
       })
-      .addCase(SignUp.rejected, (state, action) => {
+      .addCase(Login.rejected, (state, action) => {
          console.log("111",action)
         state.loading = false;
         state.error = action.error.message;
+        toast.error(error?.response?.message,"user Login successfully")
       });
   },
 });
 
-export const { UpdateFormData,resetFormData } = userSlice.actions;
-export default userSlice.reducer;
+export const { UpdateFormData,resetFormData } = LoginSlice.actions;
+export default LoginSlice.reducer;

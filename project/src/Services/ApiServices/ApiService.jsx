@@ -24,7 +24,6 @@ const postData = async (apiUrl, data) => {
     const response = await axios.post(apiUrl, data, {
       withCredentials:"include"
     });
-    console.log("hlo", response);
     return response.data;
   } catch (error) {
     console.error("Error posting data:", error.message);
@@ -53,23 +52,23 @@ export const Resister = (data) => {
 
 // ===========================Forgot Password ===================
 export const forgotPassword = (data) => {
-  const apiUrl = ForgotPassword;
+  const apiUrl = `${APiUrl}forgot-password/`;
   return postData(apiUrl, data);
 };
 
 // ===========================Reset Password ===================
 export const resetPassword = (data) => {
-  const apiUrl = ResetPassword;
+  const apiUrl = `${APiUrl}reset-password/`;
   return postData(apiUrl, data);
 };
 
 //========================signin ==========================
 export const login = (data) => {
-    const apiUrl = signIn;
+    const apiUrl = `${APiUrl}login/`;
     return postData(apiUrl, data)
 }
 
-
+//=======================OTPVerification================
 export const OtpValidate = (data) => {
    const apiUrl = `${APiUrl}verify-otp/`
   return postData(apiUrl, data)
