@@ -18,7 +18,7 @@ export function Header() {
   const location = useLocation(); // Get current route
 
   return (
-    <header className="bg-white/20 backdrop-blur-lg sticky top-0 z-50">
+    <header className="bg-white/20 backdrop-blur-lg  top-0 z-50">
       <nav className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8" aria-label="Global">
         <motion.div 
           className="flex lg:flex-1"

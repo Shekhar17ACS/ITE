@@ -72,9 +72,6 @@
 
 
 
-
-
-
 import { useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { Button } from "../ui/Button";
@@ -111,8 +108,8 @@ export function ForgotPassword() {
     dispatch(forgotPasswordAsync(email));
   };
 
-  const handleVerifyOtp = (otp) => {
-    if (otp === otp) {
+  const handleVerifyOtp = (inputOtp) => {
+    if (inputOtp === otp) { // Compare with the actual OTP
       dispatch(setIsOtpVerified(true));
       dispatch(setIsOtpModalOpen(false));
       toast.success("Success! OTP validation is done");
@@ -123,14 +120,70 @@ export function ForgotPassword() {
 
   const handleResetPassword = (e) => {
     e.preventDefault();
+    if (newPassword !== confirmPassword) {
+      toast.error("Passwords do not match");
+      return;
+    }
     dispatch(resetPasswordAsync({ newPassword, confirmPassword }));
   };
 
+  // Animation variants (matched to RegisterForm)
+  const containerVariants = {
+    hidden: { opacity: 0, y: 30 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.6, ease: "easeOut", staggerChildren: 0.1 },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { opacity: 0, y: 15 },
+    visible: {
+      opacity: 1,
+      y: 0,
+      transition: { duration: 0.4, ease: "easeOut" },
+    },
+  };
+
+  const inputVariants = {
+    focus: {
+      scale: 1.02,
+      boxShadow: "0 0 0 3px rgba(59, 130, 246, 0.3)",
+      transition: { duration: 0.3 },
+    },
+    blur: {
+      scale: 1,
+      boxShadow: "0 0 0 0 rgba(59, 130, 246, 0)",
+      transition: { duration: 0.3 },
+    },
+  };
+
   return (
-    <motion.div className="mt-16 sm:mx-auto sm:w-full sm:max-w-lg px-8 py-10 bg-gradient-to-br from-gray-50/90 to-white/90 backdrop-blur-2xl rounded-3xl shadow-xl border border-gray-100/50 overflow-hidden relative">
+    <motion.div
+      variants={containerVariants}
+      initial="hidden"
+      animate="visible"
+      className="mt-16 sm:mx-auto sm:w-full sm:max-w-lg px-8 py-10 bg-gradient-to-br from-gray-50/90 to-white/90 rounded-3xl shadow-xl border border-gray-100/50 overflow-hidden relative"
+    >
+      <div
+        className="backdrop-blur-2xl absolute inset-0 z-0"
+        style={{ background: "rgba(255, 255, 255, 0.5)" }}
+      />
+
+      {/* Added premium background effects from RegisterForm */}
+      <motion.div
+        className="absolute inset-0 bg-gradient-to-br from-blue-100/20 via-indigo-100/20 to-gray-50/20"
+        animate={{ opacity: [0.5, 0.8, 0.5] }}
+        transition={{ duration: 4, repeat: Infinity, ease: "easeInOut" }}
+      />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.3),transparent_70%)]" />
+
       <motion.div className="text-center mb-10 relative z-10">
         <h2 className="text-4xl font-extrabold text-gray-900 tracking-tight">
-          Reset Your Password
+          <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">
+            Reset Your Password
+          </span>
         </h2>
         <p className="mt-3 text-sm text-gray-500 font-medium">
           Enter your email to proceed
@@ -139,80 +192,92 @@ export function ForgotPassword() {
 
       {!isOtpVerified ? (
         <form onSubmit={handleSubmit} className="space-y-7 relative z-10">
-          <div>
+          <motion.div variants={itemVariants}>
             <label
               htmlFor="email"
-              className="block text-sm font-semibold text-gray-700 mb-2"
+              className="block text-xs sm:text-sm font-medium text-gray-700 mb-2"
             >
               Email Address
             </label>
-            <input
+            <motion.input
               id="email"
               type="email"
               required
-              value={email?.email}
+              value={email}
               onChange={(e) => dispatch(setEmail(e.target.value))}
-              className="block w-full rounded-xl border py-3 px-5 text-gray-900 shadow-md"
+              className="block w-full px-4 py-2.5 rounded-lg bg-white border border-gray-200 text-gray-800 placeholder-gray-400 focus:ring-2 focus:ring-blue-400 focus:border-transparent outline-none transition-all duration-300 shadow-sm hover:shadow-md"
+              placeholder="Enter your email"
+              variants={inputVariants}
+              whileFocus="focus"
+              whileBlur="blur"
             />
-          </div>
+          </motion.div>
 
-          <div>
+          <motion.div variants={itemVariants}>
             <Button
               type="submit"
-              className="w-full bg-indigo-600 text-white py-3 rounded-xl font-semibold shadow-lg"
+              className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 rounded-lg font-semibold hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105"
               isLoading={isLoading}
             >
               Send Password Reset Email
             </Button>
-          </div>
+          </motion.div>
         </form>
       ) : (
         <form
           onSubmit={handleResetPassword}
           className="space-y-7 relative z-10"
         >
-          <div>
+          <motion.div variants={itemVariants}>
             <label
               htmlFor="password"
-              className="block text-sm font-semibold text-gray-700 mb-2"
+              className="block text-xs sm:text-sm font-medium text-gray-700 mb-2"
             >
               New Password
             </label>
-            <input
+            <motion.input
               id="password"
               type="password"
               required
               value={newPassword}
               onChange={(e) => dispatch(setNewPassword(e.target.value))}
-              className="block w-full rounded-xl border py-3 px-5 text-gray-900 shadow-md"
+              className="block w-full px-4 py-2.5 rounded-lg bg-white border border-gray-200 text-gray-800 placeholder-gray-400 focus:ring-2 focus:ring-blue-400 focus:border-transparent outline-none transition-all duration-300 shadow-sm hover:shadow-md"
+              placeholder="Enter new password"
+              variants={inputVariants}
+              whileFocus="focus"
+              whileBlur="blur"
             />
-          </div>
+          </motion.div>
 
-          <div>
+          <motion.div variants={itemVariants}>
             <label
               htmlFor="confirmPassword"
-              className="block text-sm font-semibold text-gray-700 mb-2"
+              className="block text-xs sm:text-sm font-medium text-gray-700 mb-2"
             >
               Confirm Password
             </label>
-            <input
+            <motion.input
               id="confirmPassword"
               type="password"
               required
               value={confirmPassword}
               onChange={(e) => dispatch(setConfirmPassword(e.target.value))}
-              className="block w-full rounded-xl border py-3 px-5 text-gray-900 shadow-md"
+              className="block w-full px-4 py-2.5 rounded-lg bg-white border border-gray-200 text-gray-800 placeholder-gray-400 focus:ring-2 focus:ring-blue-400 focus:border-transparent outline-none transition-all duration-300 shadow-sm hover:shadow-md"
+              placeholder="Confirm new password"
+              variants={inputVariants}
+              whileFocus="focus"
+              whileBlur="blur"
             />
-          </div>
+          </motion.div>
 
-          <div>
+          <motion.div variants={itemVariants}>
             <Button
               type="submit"
-              className="w-full bg-green-600 text-white py-3 rounded-xl font-semibold shadow-lg"
+              className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 rounded-lg font-semibold hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105"
             >
               Reset Password
             </Button>
-          </div>
+          </motion.div>
         </form>
       )}
 
@@ -228,6 +293,10 @@ export function ForgotPassword() {
           </motion.div>
         )}
       </AnimatePresence>
+
+      {error && (
+        <p className="text-red-500 text-center mt-4">{error}</p>
+      )}
     </motion.div>
   );
 }

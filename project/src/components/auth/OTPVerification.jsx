@@ -4,7 +4,7 @@ import { Button } from '../ui/Button';
 import { toast } from 'react-toastify';
 import { postOtp,UpdateFormData } from '../Redux/ReduxSlice/OtpSlice';
 import { useDispatch, useSelector } from 'react-redux';
-
+import { useNavigate } from 'react-router-dom';
 
 const OTPVerification = ({
   onVerify,
@@ -17,6 +17,7 @@ const OTPVerification = ({
   const [error, setError] = useState(null);
   const [resent, setResent] = useState(false);
   const dispatch = useDispatch();
+  const navigate = useNavigate()
 
   const[otplength,setOtplength] = useState(null)
   const {formData} = useSelector((state)=>state.otp)
@@ -39,9 +40,7 @@ const OTPVerification = ({
     onVerify(otpString);
   };
 
-  const handleChange = ()=>{
-
-  }
+  
 
   const handleResend = () => {
     if (resent) {
@@ -80,9 +79,8 @@ const OTPVerification = ({
 console.log("otplength",otplength)
 
 
-
     const varifyOtp = ()=>{
-       dispatch(postOtp(formData))
+       dispatch(postOtp(formData)).then(()=>navigate('/login'))
     }
 
 

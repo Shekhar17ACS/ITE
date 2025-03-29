@@ -111,7 +111,8 @@ export function RegisterForm() {
         variants={containerVariants}
         initial="hidden"
         animate="visible"
-        className="min-h-screen flex items-center justify-center bg-[#F8F9FA] p-4 sm:p-6 md:p-8"
+        // className="min-h-screen flex items-center justify-center bg-[#F8F9FA] p-4 sm:p-6 md:p-8"
+        className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#F8F9FA] via-[#E3ECF3] to-[#C1DAF5] p-4 sm:p-6 md:p-8"
       >
         <div className="relative w-full max-w-xs sm:max-w-md md:max-w-lg lg:max-w-xl bg-white/90 backdrop-blur-md rounded-2xl shadow-xl p-6 sm:p-8 md:p-10 border border-gray-200/50 overflow-hidden">
           {/* Premium background effect */}
@@ -128,52 +129,52 @@ export function RegisterForm() {
               className="text-2xl sm:text-3xl md:text-4xl font-bold text-center text-gray-800 mb-6 sm:mb-8 tracking-tight"
             >
               <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">
-                Register in IETE
+                Register For Membership
               </span>
             </motion.h2>
 
             <form onSubmit={handleSubmit} className="space-y-6">
               {/* Combined Title and Name (adjusted to Full Name per Redux state) */}
               <motion.div variants={itemVariants}>
-  <div className="flex space-x-2">
-    <div className="w-1/6">
-      <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">
-        Title
-      </label>
-      <motion.select
-        name="title"
-        value={formdata?.title}
-        onChange={handleChange}
-        className="w-full px-3 py-2.5 rounded-lg bg-white border border-gray-200 text-gray-800 focus:ring-2 focus:ring-blue-400 focus:border-transparent outline-none transition-all duration-300 shadow-sm hover:shadow-md text-sm"
-        variants={inputVariants}
-        whileFocus="focus"
-        whileBlur="blur"
-      >
-        <option value="Mr.">Mr.</option>
-        <option value="Mrs.">Mrs.</option>
-        <option value="Miss">Miss</option>
-        <option value="Ms.">Ms.</option>
-      </motion.select>
-    </div>
-    <div className="w-full">
-      <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">
-        First Name
-      </label>
-      <motion.input
-        name="name"
-        type="text"
-        required
-        value={formdata?.name || ""}
-        onChange={handleChange}
-        className="w-full px-4 py-2.5 rounded-lg bg-white border border-gray-200 text-gray-800 placeholder-gray-400 focus:ring-2 focus:ring-blue-400 focus:border-transparent outline-none transition-all duration-300 shadow-sm hover:shadow-md"
-        placeholder="Enter first name"
-        variants={inputVariants}
-        whileFocus="focus"
-        whileBlur="blur"
-      />
-    </div>
-  </div>
-</motion.div>
+                <div className="flex space-x-2">
+                  <div className="w-1/6">
+                    <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">
+                      Title
+                    </label>
+                    <motion.select
+                      name="title"
+                      value={formdata?.title}
+                      onChange={handleChange}
+                      className="w-full px-3 py-2.5 rounded-lg bg-white border border-gray-200 text-gray-800 focus:ring-2 focus:ring-blue-400 focus:border-transparent outline-none transition-all duration-300 shadow-sm hover:shadow-md text-sm"
+                      variants={inputVariants}
+                      whileFocus="focus"
+                      whileBlur="blur"
+                    >
+                      <option value="Mr.">Mr.</option>
+                      <option value="Mrs.">Mrs.</option>
+                      <option value="Miss">Miss</option>
+                      <option value="Ms.">Ms.</option>
+                    </motion.select>
+                  </div>
+                  <div className="w-full">
+                    <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">
+                      First Name
+                    </label>
+                    <motion.input
+                      name="name"
+                      type="text"
+                      required
+                      value={formdata?.name || ""}
+                      onChange={handleChange}
+                      className="w-full px-4 py-2.5 rounded-lg bg-white border border-gray-200 text-gray-800 placeholder-gray-400 focus:ring-2 focus:ring-blue-400 focus:border-transparent outline-none transition-all duration-300 shadow-sm hover:shadow-md"
+                      placeholder="Enter first name"
+                      variants={inputVariants}
+                      whileFocus="focus"
+                      whileBlur="blur"
+                    />
+                  </div>
+                </div>
+              </motion.div>
 
               {/* <motion.div variants={itemVariants}>
                 <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">Username</label>
