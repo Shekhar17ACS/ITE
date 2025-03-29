@@ -46,10 +46,15 @@ INSTALLED_APPS = [
 
 
 AUTH_USER_MODEL = 'api_v1.User'
-FRONTEND_URL = "http://127.0.0.1:8000/api/v1"
+FRONTEND_URL = "http://127.0.0.1:8000/api/v1/"
+
 DEFAULT_FROM_EMAIL = "shalender0101yaduvanshi@gmail.com"
 
+RAZORPAY_KEY_ID = "your_razorpay_key_id"
+RAZORPAY_KEY_SECRET = "your_razorpay_secret"
+
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
@@ -57,7 +62,7 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'corsheaders.middleware.CorsMiddleware',
+    
 ]
 
 
@@ -72,6 +77,15 @@ REST_FRAMEWORK = {
 #         'rest_framework.authentication.TokenAuthentication',
 #     ],
 # }
+
+CORS_ALLOW_ALL_ORIGINS = True
+CORS_ALLOWED_ORIGINS = [
+    "http://localhost:3000",  # React app (change this for production)
+    "http://127.0.0.1:8000",
+    "http://localhost:8000",
+]
+
+CORS_ALLOW_CREDENTIALS = True
 
 ROOT_URLCONF = 'iete.urls'
 
@@ -162,3 +176,8 @@ EMAIL_PORT=587
 EMAIL_USE_TLS=True
 EMAIL_HOST_USER='shalender0101yaduvanshi@gmail.com'
 EMAIL_HOST_PASSWORD="uxsx hjih inxp qjiv"
+
+
+SESSION_COOKIE_HTTPONLY = False  
+SESSION_COOKIE_SAMESITE = 'None'  
+SESSION_COOKIE_SECURE = True  

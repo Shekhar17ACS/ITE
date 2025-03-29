@@ -16,7 +16,9 @@ import { Events } from './components/Events';
 import { ForgotPassword } from './components/auth/ForgotPassword';
 import { EligibilityCheck } from './components/EligibilityCheck';
 import Newsletter from './components/NewsletterAndMap';
+
 import Userdashboard from './Userdash/Userdashboard'
+ 
 
 
 function App() {
@@ -36,8 +38,12 @@ function App() {
               <Route path="/register" element={<RegisterForm />} />
               <Route path="/membership" element={<MembershipForm />} />
               <Route path="/events" element={<Events />} />
+
               {/* <Route path="/admin" element={<Dashboard />} /> */}
               <Route path="/admin" element={<Userdashboard />} />
+=======
+//               <Route path="/admin" element={<Dashboard />} />
+
               <Route path="/forgot-password" element={<ForgotPassword />} />
               <Route path="/eligibility-check" element={<EligibilityCheck />} /> 
             </Routes>
