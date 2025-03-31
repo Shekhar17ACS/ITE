@@ -37,6 +37,7 @@ class UserManager(BaseUserManager):
 
 
 class Title(models.Model):
+    user = models.OneToOneField("User", on_delete=models.SET_NULL, null=True, blank=True)
     name = models.CharField(max_length=30)
 
     def __str__(self):
@@ -67,7 +68,6 @@ class QualificationBranch(Common):
 class User(AbstractBaseUser, PermissionsMixin):
     id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     application_id = models.CharField(max_length=15, null=True, blank=True, unique=True, editable=False)
-    title = models.OneToOneField("Title", on_delete=models.SET_NULL, null=True, blank=True)
     name = models.CharField(max_length=200, null=True, blank=True)
     middle_name = models.CharField(max_length=50, null=True, blank=True)
     last_name = models.CharField(max_length=50, null=True, blank=True)

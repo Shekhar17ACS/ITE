@@ -11,6 +11,7 @@ https://docs.djangoproject.com/en/dev/ref/settings/
 """
 
 from pathlib import Path
+import os 
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
@@ -39,14 +40,14 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'rest_framework',
     'rest_framework_simplejwt',
-    # 'rest_framework.authtoken',
+    # 'rest_framework_simplejwt.blacklist'
     'corsheaders',
     'api_v1'
 ]
 
 
 AUTH_USER_MODEL = 'api_v1.User'
-FRONTEND_URL = "http://127.0.0.1:8000/api/v1/"
+FRONTEND_URL = "http://127.0.0.1:8000/api/v1"
 
 DEFAULT_FROM_EMAIL = "shalender0101yaduvanshi@gmail.com"
 
@@ -62,6 +63,8 @@ MIDDLEWARE = [
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
+
+    # 'whitenoise.middleware.WhiteNoiseMiddleware',
     
     
 ]
@@ -152,7 +155,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = 'en-us'
 
-TIME_ZONE = 'UTC'
+TIME_ZONE = 'Asia/Kolkata'
 
 USE_I18N = True
 
@@ -163,6 +166,15 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/dev/howto/static-files/
 
 STATIC_URL = 'static/'
+
+# STATICFILES_DIRS = [
+#     os.path.join(BASE_DIR, "static"),
+# ]
+
+# STATIC_ROOT = os.path.join(BASE_DIR, "staticfiles")
+
+# # Developement
+# STATICFILES_STORAGE = "whitenoise.storage.CompressedManifestStaticFilesStorage"
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/dev/ref/settings/#default-auto-field
@@ -182,3 +194,4 @@ EMAIL_HOST_PASSWORD="uxsx hjih inxp qjiv"
 SESSION_COOKIE_HTTPONLY = False  
 SESSION_COOKIE_SAMESITE = 'None'  
 SESSION_COOKIE_SECURE = True  
+# SESSION_EXPIRE_AT_BROWSER_CLOSE = True
