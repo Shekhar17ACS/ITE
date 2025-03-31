@@ -15,7 +15,8 @@ export const Login = createAsyncThunk("LoginUser/Login", async (data, { rejectWi
     const response = await login(data);
     console.log("response", response);
     if (response.success) {
-      return response;
+      // return response;
+      return response.data;
     } else {
       return rejectWithValue(response.message || "Signup failed");
     }
@@ -57,15 +58,20 @@ const LoginSlice = createSlice({
       .addCase(Login.fulfilled, (state, action) => {
         console.log("action.payload",action.payload)
         state.loading = false;
-        state.data = action.payload?.data || action.payload; // ✅ Ensure `data` is properly assigned
+        state.data = action.payload.data|| action.payload; // ✅ Ensure `data` is properly assigned
         toast.success("user Login successfully")
        
       })
       .addCase(Login.rejected, (state, action) => {
          console.log("111",action)
         state.loading = false;
-        state.error = action.error.message;
-        toast.error(error?.response?.message,"user Login successfully")
+        if (action.payload !== "Login successful.") {
+          state.error = action.error.message;
+          toast.error(action.error.message, "user Login failed")
+        }
+        // state.error = action.error.message;
+        // // toast.error(error?.response?.message,"user Login successfully")
+        // toast.error(action?.error.message,"user Login successfully")
       });
   },
 });
