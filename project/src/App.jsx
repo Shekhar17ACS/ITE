@@ -1,4 +1,4 @@
-import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, useLocation } from 'react-router-dom';
 import { Toaster } from 'react-hot-toast';
 import { Header } from './components/Header';
 import { Footer } from './components/Footer';
@@ -19,7 +19,14 @@ import Newsletter from './components/NewsletterAndMap';
 
 import Userdashboard from './Userdash/Userdashboard'
  
-
+function HeaderWrapper() {
+  const location = useLocation();
+  return location.pathname !== '/admin' ? <Header /> : null;
+}
+function FooterWrapper(){
+  const location = useLocation();
+  return location.pathname !== '/admin' ? <Footer /> : null;
+}
 
 function App() {
   return (
@@ -28,6 +35,7 @@ function App() {
         <div className="min-h-screen bg-gray-50 flex flex-col">
         <ToastContainer />
           <Toaster position="top-right" />
+          <HeaderWrapper />
           {/* <Header /> */}
           <main className="flex-grow">
             <Routes>
@@ -38,16 +46,14 @@ function App() {
               <Route path="/register" element={<RegisterForm />} />
               <Route path="/membership" element={<MembershipForm />} />
               <Route path="/events" element={<Events />} />
-
               {/* <Route path="/admin" element={<Dashboard />} /> */}
               <Route path="/admin" element={<Userdashboard />} />
-         {/* <Route path="/admin" element={<Dashboard />} /> */}
-
               <Route path="/forgot-password" element={<ForgotPassword />} />
               <Route path="/eligibility-check" element={<EligibilityCheck />} /> 
             </Routes>
           </main>
           {/* <Footer />  */}
+          <FooterWrapper />
         </div>
       </Suspense>
     </Router>

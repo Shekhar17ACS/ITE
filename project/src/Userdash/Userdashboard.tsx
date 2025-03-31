@@ -9,19 +9,19 @@ import EligibleForm from "../components/pages/MultiStepForm.jsx"
 import type { FormData, PaymentHistory as PaymentHistoryType } from "../types/index"
 
 const mockFormData: FormData = {
-  applicationNo: "APP-2024-0015",
-  email: "user@example.com",
-  userId: "USR-2024-0015",
+  applicationNo: "APP596611",
+  email: "Shekharsharma17800@gmail.com",
+  userId: "USR-2025-0015",
   status: "In Progress",
-  amount: 500000,
-  date: "2024-03-15",
+  amount: 25869,
+  date: "2025-03-28",
   isApproved: true,
   paymentStatus: "Pending",
   steps: [
-    { id: 1, title: "Loan Application Received", status: "completed", date: "2024-03-15" },
-    { id: 2, title: "Credit Check Complete", status: "completed", date: "2024-03-16" },
-    { id: 3, title: "Submit Financial Documents", status: "pending", date: null },
-    { id: 4, title: "Loan Agreement", status: "pending", date: null },
+    { id: 1, title: "Application Received", status: "completed", date: "2025-03-28" },
+    { id: 2, title: "Documents Submitted", status: "completed", date: "2025-03-30" },
+    { id: 3, title: "Payment Completed", status: "pending", date: null },
+    { id: 4, title: "Membership Alloted", status: "pending", date: null },
   ],
   images: [
     "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?q=80&w=200&auto=format",
@@ -32,22 +32,22 @@ const mockFormData: FormData = {
 const mockPayments: PaymentHistoryType[] = [
   {
     id: "1",
-    applicationNo: "APP-2024-0015",
-    amount: 500000,
+    applicationNo: "APP596611",
+    amount: 25869,
     adminFee: 5000,
     status: "Pending",
-    date: "2024-03-15",
+    date: "2025-03-28",
     transactionId: "TXN-2024-0015",
     paymentMethod: "UPI",
     remarks: "Awaiting bank confirmation",
   },
   {
     id: "2",
-    applicationNo: "APP-2024-0010",
-    amount: 300000,
+    applicationNo: "APP596611",
+    amount: 25869,
     adminFee: 3000,
     status: "Completed",
-    date: "2024-03-10",
+    date: "2025-03-29",
     transactionId: "TXN-2024-0010",
     paymentMethod: "Credit Card",
     remarks: "Payment successful",
@@ -58,7 +58,7 @@ function Userdashboard() {
   const [isSidebarOpen, setIsSidebarOpen] = useState(true)
   const [activeTab, setActiveTab] = useState("eligible")
   const [isMobile, setIsMobile] = useState(false)
-  const userEmail = "user@example.com"
+  const userEmail = "Shekharsharma17800@gmail.com"
 
   useEffect(() => {
     const checkIfMobile = () => {

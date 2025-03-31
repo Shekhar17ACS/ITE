@@ -433,7 +433,9 @@ const {formData} = useSelector((state)=>state.LoginUser)
 
   const handleSubmit = (e)=>{
     e.preventDefault();
-     dispatch(Login(formData)).then(()=>setIsOtpModalOpen(true))
+    //  dispatch(Login(formData)).then(()=>setIsOtpModalOpen(true))
+    dispatch(Login(formData)).then(()=>navigate('/admin'))
+    toast.success('Successfully login')
   }
 
 

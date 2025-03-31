@@ -152,7 +152,7 @@ const FormTracker: React.FC<FormTrackerProps> = ({ formData }) => {
 
         <div className="mb-8">
           <div className="flex items-center justify-between border-b pb-4">
-            <span className="text-lg font-medium">Loan Amount:</span>
+            <span className="text-lg font-medium">Amount:</span>
             <span className="text-xl font-bold">₹{formData.amount.toLocaleString()}</span>
           </div>
         </div>
