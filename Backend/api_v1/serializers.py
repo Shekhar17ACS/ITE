@@ -6,14 +6,14 @@ from .models import *
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'email', 'mobile_no', 'name', "middle_name", "last_name", "title"]
+        fields = ['id', 'email', 'mobile_number', 'name', "middle_name", "last_name", "title"]
 
 class SignupSerializer(serializers.ModelSerializer):
     confirm_password = serializers.CharField(write_only=True, required=True)
 
     class Meta:
         model = User
-        fields = ["name", "email", "password", "confirm_password", "mobile_no", "middle_name", "last_name", "title"]
+        fields = ["name", "email", "password", "confirm_password", "mobile_number", "middle_name", "last_name", "title"]
         extra_kwargs = {"password": {"write_only": True}}
 
     def validate(self, data):
@@ -32,7 +32,7 @@ class SignupSerializer(serializers.ModelSerializer):
         user = User(
             name=validated_data["name"],
             email=validated_data["email"],
-            mobile_no=validated_data["mobile_no"],
+            mobile_number=validated_data["mobile_number"],
             is_active=False  # User is inactive until OTP is verified
         )
         user.set_password(validated_data["password"])  # Securely set password
