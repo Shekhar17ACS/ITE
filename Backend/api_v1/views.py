@@ -2,28 +2,20 @@ from django.utils.http import urlsafe_base64_encode, urlsafe_base64_decode
 from django.utils.encoding import force_bytes, force_str
 from django.contrib.auth.tokens import default_token_generator
 from django.contrib.auth.hashers import make_password
-
-from rest_framework.views import APIView
-from rest_framework.permissions import AllowAny, IsAuthenticated
-from rest_framework.authtoken.models import Token
-from rest_framework.views import APIView
-from rest_framework.permissions import IsAuthenticated, AllowAny
+from rest_framework.permissions import AllowAny
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import authenticate
 from .serializers import *
-from datetime import timedelta
-import random
 from django.core.cache import cache
-
+from rest_framework import status
 from django.utils import timezone
-from rest_framework import serializers, status
-from rest_framework.response import Response
 from rest_framework.views import APIView
 import random
 from datetime import timedelta
-
+from rest_framework.response import Response
 from django.core.mail import send_mail
 from django.conf import settings
+from rest_framework.authtoken.models import Token
 
 
 
@@ -163,86 +155,172 @@ class ResendOTPAPIView(APIView):
 
         return Response({"message": "New OTP sent to your email."}, status=status.HTTP_200_OK)
 
-class LoginView(APIView):
+
+# class LoginAPIView(APIView):
+#     permission_classes = [AllowAny]
+#
+#     def post(self, request):
+#         identifier = request.data.get("identifier")  # Can be email, mobile, or application_id
+#         password = request.data.get("password")
+#
+#         if not identifier or not password:
+#             return Response({"error": "Identifier and password are required."}, status=status.HTTP_400_BAD_REQUEST)
+#
+#         # Identify user by email, mobile, or application_id
+#         try:
+#             user = User.objects.filter(
+#                 email=identifier
+#             ).first() or User.objects.filter(
+#                 mobile_number=identifier
+#             ).first() or User.objects.filter(
+#                 application_id=identifier
+#             ).first()
+#
+#             if not user:
+#                 return Response({"error": "Invalid credentials."}, status=status.HTTP_401_UNAUTHORIZED)
+#
+#             # Authenticate user
+#             if not user.check_password(password):
+#                 return Response({"error": "Invalid credentials."}, status=status.HTTP_401_UNAUTHORIZED)
+#
+#             if not user.is_active:
+#                 return Response({"error": "Account is inactive. Please verify your email."}, status=status.HTTP_403_FORBIDDEN)
+#
+#             # Generate or retrieve token
+#             token, _ = Token.objects.get_or_create(user=user)
+#
+#             return Response({
+#                 "message": "Login successful.",
+#                 "token": token.key,
+#                 "user": {
+#                     "id": user.id,
+#                     "email": user.email,
+#                     "mobile_number": user.mobile_number,
+#                     "application_id": user.application_id,
+#                 }
+#             }, status=status.HTTP_200_OK)
+#
+#         except Exception as e:
+#             return Response({"error": str(e)}, status=status.HTTP_500_INTERNAL_SERVER_ERROR)
+
+
+class LoginAPIView(APIView):
+    """ API to authenticate users using multiple login methods """
+
+    permission_classes = [AllowAny]
+
     def post(self, request):
         email = request.data.get("email")
+        mobile_number = request.data.get("mobile_number")
+        application_id = request.data.get("application_id")
         password = request.data.get("password")
         otp = request.data.get("otp")
-        request_otp = request.data.get("request_otp", False)  # If true, send a new OTP
 
-        if not email:
-            return Response(
-                {"error": "Email is required."},
-                status=status.HTTP_400_BAD_REQUEST
-            )
+        session = request.session
 
-        try:
-            user = User.objects.get(email=email)
-        except User.DoesNotExist:
-            return Response(
-                {"error": "Invalid credentials or account does not exist."},
-                status=status.HTTP_401_UNAUTHORIZED
-            )
-
-        # If user wants an OTP, generate and send it
-        if request_otp:
-            otp_code = str(random.randint(100000, 999999))  # Generate 6-digit OTP
-            cache.set(f"otp_{email}", otp_code, timeout=300)  # Store OTP for 5 minutes
-            send_email_otp(email, otp_code)
-
-            return Response(
-                {"message": "OTP sent to your email. Please enter the OTP to log in."},
-                status=status.HTTP_200_OK
-            )
-
-        # OTP Login
-        if otp:
-            stored_otp = cache.get(f"otp_{email}")  # Retrieve stored OTP
-            if not stored_otp or stored_otp != otp:
-                return Response(
-                    {"error": "Invalid or expired OTP."},
-                    status=status.HTTP_401_UNAUTHORIZED
-                )
-
-            # Ensure account is active
-            if not user.is_active:
-                return Response(
-                    {"error": "Account is not active. Please activate your account."},
-                    status=status.HTTP_403_FORBIDDEN
-                )
-
-            # Clear OTP after successful login
-            cache.delete(f"otp_{email}")
-
-        # Password Login
-        elif password:
-            user = authenticate(request, username=user.username, password=password)
-            if not user:
-                return Response(
-                    {"error": "Invalid credentials or account does not exist."},
-                    status=status.HTTP_401_UNAUTHORIZED
-                )
+        # Case 1: Login with Email & Password
+        if email and password:
+            try:
+                user = User.objects.get(email=email)
+            except User.DoesNotExist:
+                return Response({"error": "User with this email does not exist."}, status=status.HTTP_400_BAD_REQUEST)
 
             if not user.is_active:
-                return Response(
-                    {"error": "Account is not active. Please check your email to activate."},
-                    status=status.HTTP_403_FORBIDDEN
-                )
+                return Response({"error": "User account is inactive. Verify OTP first."}, status=status.HTTP_403_FORBIDDEN)
+
+            if not user.check_password(password):
+                return Response({"error": "Invalid password."}, status=status.HTTP_400_BAD_REQUEST)
+
+            return self.generate_login_response(user)
+
+        # Case 2: Login with Mobile Number & Password
+        elif mobile_number and password:
+            try:
+                user = User.objects.get(mobile_number=mobile_number)
+            except User.DoesNotExist:
+                return Response({"error": "User with this mobile number does not exist."}, status=status.HTTP_400_BAD_REQUEST)
+
+            if not user.is_active:
+                return Response({"error": "User account is inactive. Verify OTP first."}, status=status.HTTP_403_FORBIDDEN)
+
+            if not user.check_password(password):
+                return Response({"error": "Invalid password."}, status=status.HTTP_400_BAD_REQUEST)
+
+            return self.generate_login_response(user)
+
+        # Case 3: Login with Application ID & Password
+        elif application_id and password:
+            try:
+                user = User.objects.get(application_id=application_id)
+            except User.DoesNotExist:
+                return Response({"error": "User with this application ID does not exist."}, status=status.HTTP_400_BAD_REQUEST)
+
+            if not user.is_active:
+                return Response({"error": "User account is inactive. Verify OTP first."}, status=status.HTTP_403_FORBIDDEN)
+
+            if not user.check_password(password):
+                return Response({"error": "Invalid password."}, status=status.HTTP_400_BAD_REQUEST)
+
+            return self.generate_login_response(user)
+
+        # Case 4: Login with Email & OTP
+        elif email and otp:
+            try:
+                user = User.objects.get(email=email)
+            except User.DoesNotExist:
+                return Response({"error": "User with this email does not exist."}, status=status.HTTP_400_BAD_REQUEST)
+
+            return self.verify_otp_login(session, user, otp)
+
+        # Case 5: Login with Application ID & OTP
+        elif application_id and otp:
+            try:
+                user = User.objects.get(application_id=application_id)
+            except User.DoesNotExist:
+                return Response({"error": "User with this application ID does not exist."}, status=status.HTTP_400_BAD_REQUEST)
+
+            return self.verify_otp_login(session, user, otp)
 
         else:
-            return Response(
-                {"error": "Either password or OTP is required."},
-                status=status.HTTP_400_BAD_REQUEST
-            )
+            return Response({"error": "Invalid login credentials."}, status=status.HTTP_400_BAD_REQUEST)
 
-        # Generate JWT tokens
-        refresh = RefreshToken.for_user(user)
+    def generate_login_response(self, user):
+        """ Generate response upon successful login """
         return Response({
-            "token": str(refresh.access_token),
-            "refresh_token": str(refresh),
-            "user_id": user.id,
-            "email": user.email
+            "message": "Login successful.",
+            "user": {
+                "id": user.id,
+                "email": user.email,
+                "mobile_number": user.mobile_number,
+                "application_id": user.application_id,
+                "name": user.name
+            }
         }, status=status.HTTP_200_OK)
+
+    def verify_otp_login(self, session, user, otp_input):
+        """ Verify OTP for login """
+        stored_otp = session.get("otp")
+        otp_expiry_str = session.get("otp_expires_at")
+
+        if not stored_otp or stored_otp != otp_input:
+            return Response({"error": "Invalid OTP."}, status=status.HTTP_400_BAD_REQUEST)
+
+        if not otp_expiry_str:
+            return Response({"error": "OTP expiration time not found. Request a new OTP."}, status=status.HTTP_400_BAD_REQUEST)
+
+        otp_expiry = timezone.datetime.fromisoformat(otp_expiry_str)
+
+        if timezone.now() > otp_expiry:
+            return Response({"error": "OTP has expired. Request a new OTP."}, status=status.HTTP_400_BAD_REQUEST)
+
+        # Clear OTP session after successful verification
+        for key in ["otp", "otp_expires_at", "email"]:
+            session.pop(key, None)
+        session.modified = True
+
+        return self.generate_login_response(user)
+
+
 
 class RequestPasswordResetAPIView(APIView):
     """ API to request password reset for logged-in user """
@@ -314,67 +392,67 @@ class ResetPasswordAPIView(APIView):
 
 ###########################################################################################################
 
-import razorpay, time
-from django.conf import settings
-from rest_framework.response import Response
-from rest_framework.views import APIView
-from .models import Payment
-
-razorpay_client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
-
-class CreateOrderAPIView(APIView):
-    def post(self, request):
-        amount = request.data.get("amount")
-        
-        if not amount:
-            return Response({"error": "Amount is required"}, status=status.HTTP_400_BAD_REQUEST)
-
-        amount_paise = int(amount) * 100  
-
-        receipt_number = f"receipt_{int(time.time())}"
-
-        order_data = {
-            "amount": amount_paise,
-            "currency": "INR",
-            "payment_capture": 1,
-            "receipt": receipt_number, 
-        }
-
-        order = razorpay_client.order.create(order_data)
-
-        Payment.objects.create(
-            order_id=order["id"],
-            receipt=receipt_number,
-            amount=amount,
-            status="Created"
-        )
-
-        return Response({
-            "order_id": order["id"],
-            "amount": order["amount"],
-            "currency": order["currency"],
-            "key": settings.RAZORPAY_KEY_ID,
-            "receipt": receipt_number, 
-        })
-
-class VerifyPaymentAPIView(APIView):
-    def post(self, request):
-        razorpay_order_id = request.data.get("razorpay_order_id")
-        razorpay_payment_id = request.data.get("razorpay_payment_id")
-        razorpay_signature = request.data.get("razorpay_signature")
-
-        try:
-            razorpay_client.utility.verify_payment_signature({
-                "razorpay_order_id": razorpay_order_id,
-                "razorpay_payment_id": razorpay_payment_id,
-                "razorpay_signature": razorpay_signature,
-            })
-
-            payment = Payment.objects.get(order_id=razorpay_order_id)
-            payment.status = "Success"
-            payment.payment_id = razorpay_payment_id
-            payment.save()
-
-            return Response({"message": "Payment successful!"})
-        except:
-            return Response({"message": "Payment verification failed!"}, status=400)
+# import razorpay, time
+# from django.conf import settings
+# from rest_framework.response import Response
+# from rest_framework.views import APIView
+# from .models import Payment
+#
+# razorpay_client = razorpay.Client(auth=(settings.RAZORPAY_KEY_ID, settings.RAZORPAY_KEY_SECRET))
+#
+# class CreateOrderAPIView(APIView):
+#     def post(self, request):
+#         amount = request.data.get("amount")
+#
+#         if not amount:
+#             return Response({"error": "Amount is required"}, status=status.HTTP_400_BAD_REQUEST)
+#
+#         amount_paise = int(amount) * 100
+#
+#         receipt_number = f"receipt_{int(time.time())}"
+#
+#         order_data = {
+#             "amount": amount_paise,
+#             "currency": "INR",
+#             "payment_capture": 1,
+#             "receipt": receipt_number,
+#         }
+#
+#         order = razorpay_client.order.create(order_data)
+#
+#         Payment.objects.create(
+#             order_id=order["id"],
+#             receipt=receipt_number,
+#             amount=amount,
+#             status="Created"
+#         )
+#
+#         return Response({
+#             "order_id": order["id"],
+#             "amount": order["amount"],
+#             "currency": order["currency"],
+#             "key": settings.RAZORPAY_KEY_ID,
+#             "receipt": receipt_number,
+#         })
+#
+# class VerifyPaymentAPIView(APIView):
+#     def post(self, request):
+#         razorpay_order_id = request.data.get("razorpay_order_id")
+#         razorpay_payment_id = request.data.get("razorpay_payment_id")
+#         razorpay_signature = request.data.get("razorpay_signature")
+#
+#         try:
+#             razorpay_client.utility.verify_payment_signature({
+#                 "razorpay_order_id": razorpay_order_id,
+#                 "razorpay_payment_id": razorpay_payment_id,
+#                 "razorpay_signature": razorpay_signature,
+#             })
+#
+#             payment = Payment.objects.get(order_id=razorpay_order_id)
+#             payment.status = "Success"
+#             payment.payment_id = razorpay_payment_id
+#             payment.save()
+#
+#             return Response({"message": "Payment successful!"})
+#         except:
+#             return Response({"message": "Payment verification failed!"}, status=400)
