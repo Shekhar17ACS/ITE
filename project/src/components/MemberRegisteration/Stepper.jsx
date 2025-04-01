@@ -4,10 +4,10 @@ import { FaCheckCircle } from "react-icons/fa";
 
 const Stepper = ({ step, onStepClick, completedSteps = [], canNavigateAll = false }) => {
   const steps = [
-    "Registration",
+    // "Registration",
     "Personal Details",
-    "Parents' Details",
-    "Course Selection",
+    // "Parents' Details",
+    "Membership Selection",
     "Documents",
     "Eligibility Check",
     "Payment",

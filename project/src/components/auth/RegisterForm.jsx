@@ -250,10 +250,10 @@ export function RegisterForm() {
                   Mobile Number
                 </label>
                 <motion.input
-                  name="mobile_no"
+                  name="mobile_number"
                   type="tel"
                   required
-                  value={formdata?.mobile_no || ""}
+                  value={formdata?.mobile_number || ""}
                   onChange={handleChange}
                   className="w-full px-4 py-2.5 rounded-lg bg-white border border-gray-200 text-gray-800 placeholder-gray-400 focus:ring-2 focus:ring-blue-400 focus:border-transparent outline-none transition-all duration-300 shadow-sm hover:shadow-md"
                   placeholder="+91-XXXX-XXXXXX"

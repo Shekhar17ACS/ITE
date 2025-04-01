@@ -3,13 +3,17 @@ import { motion } from "framer-motion";
 
 const CourseSelection = ({ nextStep, prevStep, formData, setFormData }) => {
   const courses = [
-    "B.Sc. Computer Science",
-    "B.Com",
-    "BBA",
-    "B.Tech",
-    "B.A",
-    "B.Sc. Mathematics",
-    "B.Sc. Physics",
+    // "B.Sc. Computer Science",
+    // "B.Com",
+    // "BBA",
+    // "B.Tech",
+    // "B.A",
+    // "B.Sc. Mathematics",
+    // "B.Sc. Physics",
+    "FELLOW (F)",
+    "MEMBER (M)",
+    "ASSOCIATE MEMBER (AM)",
+    "ASSOCIATE (A)",
   ];
 
   const [selectedCourse, setSelectedCourse] = useState(formData.course || "");
@@ -17,7 +21,7 @@ const CourseSelection = ({ nextStep, prevStep, formData, setFormData }) => {
   const handleSubmit = () => {
     
     if (!selectedCourse) {
-      alert("Please select a course before proceeding!");
+      alert("Please select a membership before proceeding!");
       return;
     }
     setFormData({ ...formData, course: selectedCourse });
@@ -38,7 +42,7 @@ const CourseSelection = ({ nextStep, prevStep, formData, setFormData }) => {
         transition={{ delay: 0.2, duration: 0.5 }}
         className="text-4xl font-bold text-center text-transparent bg-clip-text bg-gradient-to-r from-blue-600 to-purple-600 mb-8"
       >
-        Select Your Course
+        Choose Your Membership
       </motion.h2>
 
       <div className="grid grid-cols-2 md:grid-cols-3 gap-6">
