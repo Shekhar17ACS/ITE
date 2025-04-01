@@ -18,7 +18,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar, activeTab, set
   ]
 
   return (
-    <div className="flex h-full w-full flex-col bg-[#1a237e] shadow-lg">
+    <div className="flex h-full w-full flex-col bg-[#242b49] shadow-lg">
       <div className="flex h-16 items-center justify-between px-4">
         <h2 className="text-xl font-bold text-white">Dashboard</h2>
         <button
@@ -38,7 +38,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar, activeTab, set
               key={item.id}
               onClick={() => setActiveTab(item.id)}
               className={`flex w-full items-center rounded-lg px-4 py-2.5 transition-colors ${
-                activeTab === item.id ? "bg-blue-600 text-white" : "text-gray-300 hover:bg-blue-800"
+                activeTab === item.id ? "bg-[#4369ef] text-white" : "text-gray-300 hover:bg-blue-800"
               }`}
             >
               <Icon size={20} className="shrink-0" />
