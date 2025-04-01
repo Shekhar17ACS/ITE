@@ -102,10 +102,10 @@ const MultiStepForm = () => {
         <div className="w-full max-w-3xl p-6 bg-gray-100">
           {loading ? <p className="text-center">Fetching user details...</p> : null}
 
-          {step === 1 && (
+          {/* {step === 1 && (
             <RegistrationForm nextStep={handleNextStep} formData={formData} setFormData={setFormData} />
-          )}
-          {step === 2 && (
+          )} */}
+          {step === 1 && (
             <PersonalDetails
               nextStep={handleNextStep}
               prevStep={handlePrevStep}
@@ -113,15 +113,15 @@ const MultiStepForm = () => {
               setFormData={setFormData}
             />
           )}
-          {step === 3 && (
+          {/* {step === 3 && (
             <ParentsDetails
               nextStep={handleNextStep}
               prevStep={handlePrevStep}
               formData={formData}
               setFormData={setFormData}
             />
-          )}
-          {step === 4 && (
+          )} */}
+          {step === 2 && (
             <CourseSelection
               nextStep={handleNextStep}
               prevStep={handlePrevStep}
@@ -129,7 +129,7 @@ const MultiStepForm = () => {
               setFormData={setFormData}
             />
           )}
-          {step === 5 && (
+          {step === 3 && (
             <DocumentUpload
               nextStep={handleNextStep}
               prevStep={handlePrevStep}
@@ -137,7 +137,7 @@ const MultiStepForm = () => {
               setFormData={setFormData}
             />
           )}
-          {step === 6 && (
+          {step === 4 && (
             <EligibilityCheck
               nextStep={handleNextStep}
               prevStep={handlePrevStep}
@@ -145,12 +145,12 @@ const MultiStepForm = () => {
               setFormData={setFormData}
             />
           )}
-          {step === 7 && (
+          {step === 5 && (
             <Payment prevStep={handlePrevStep} formData={formData} />
           )}
 
           <div className="mt-2 text-center text-gray-600">
-            <p>Step {step} of 7</p>
+            {/* <p>Step {step} of 7</p> */}
           </div>
         </div>
       </div>

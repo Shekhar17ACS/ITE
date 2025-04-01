@@ -41,7 +41,7 @@ const initialState = {
     password: "",
     confirm_password: "",
     // username: "",
-    mobile_no: "",
+    mobile_number: "",
   },
 };
 
