@@ -30,7 +30,7 @@ export function Footer() {
       <div className="max-w-7xl mx-auto px-6 lg:px-8">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           <div>
-            <h3 className="text-2xl font-extrabold mb-4 text-blue-400">IETE</h3>
+            <h3 className="text-2xl font-extrabold mb-4 text-white">IETE</h3>
             <p className="text-gray-300">
               The Institution of Electronics and Telecommunication Engineers
             </p>
@@ -38,7 +38,7 @@ export function Footer() {
 
           {/* Quick Links */}
           <div>
-            <h4 className="text-lg font-semibold mb-4 text-blue-400">Quick Links</h4>
+            <h4 className="text-lg font-semibold mb-4 text-white">Quick Links</h4>
             <ul className="space-y-2">
               <li><Link to="/" className="text-gray-300 hover:text-blue-400 transition-all">Home</Link></li>
               <li><Link to="/about" className="text-gray-300 hover:text-blue-400 transition-all">About</Link></li>
@@ -49,7 +49,7 @@ export function Footer() {
 
           {/* Contact Info */}
           <div>
-            <h4 className="text-lg font-semibold mb-4 text-blue-400">Contact Info</h4>
+            <h4 className="text-lg font-semibold mb-4 text-white">Contact Info</h4>
             <ul className="space-y-2 text-gray-300">
               <li>2, Institutional Area</li>
               <li>Lodhi Road, New Delhi-110003</li>
@@ -60,7 +60,7 @@ export function Footer() {
 
           {/* Social Media Links */}
           <div>
-            <h4 className="text-lg font-semibold mb-4 text-blue-400">Connect With Us</h4>
+            <h4 className="text-lg font-semibold mb-4 text-white">Connect With Us</h4>
             <div className="flex space-x-4">
               <a href="#" className="text-gray-300 hover:text-blue-400 transition-all">
                 <span className="sr-only">Facebook</span>

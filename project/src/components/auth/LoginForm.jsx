@@ -293,6 +293,7 @@ import "react-toastify/dist/ReactToastify.css";
 import OTPVerification from "./OTPVerification";
 import { Login,UpdateFormData,resetFormData } from "../Redux/ReduxSlice/LoginSlice";
 import { useSelector, useDispatch } from "react-redux";
+import img1 from "../../assets/login1.jpg"
 
 export function LoginForm() {
   const navigate = useNavigate();
@@ -451,9 +452,9 @@ const {formData} = useSelector((state)=>state.LoginUser)
       initial="hidden"
       animate="visible"
       // className="min-h-screen flex items-center justify-center bg-[#F8F9FA] p-4 sm:p-6 md:p-8"
-      className="min-h-screen flex items-center justify-center bg-gradient-to-br from-[#F8F9FA] via-[#E3ECF3] to-[#C1DAF5] p-4 sm:p-6 md:p-8"
-    >
-      <div className="relative w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg bg-white/90 backdrop-blur-md rounded-2xl shadow-xl p-6 sm:p-8 border border-gray-200/50 overflow-hidden">
+      className="relative min-h-screen flex items-center justify-center bg-cover bg-center"
+              style={{ backgroundImage: `url(${img1})` }} >
+      <div className="relative w-full max-w-xs sm:max-w-sm md:max-w-md lg:max-w-lg  backdrop-blur-md rounded-2xl shadow-xl p-6 sm:p-8 border border-gray-200/50 overflow-hidden">
         {/* Premium background effect */}
         <motion.div
           className="absolute inset-0 bg-gradient-to-br from-blue-200/20 via-indigo-200/20 to-gray-100/20"
@@ -467,7 +468,7 @@ const {formData} = useSelector((state)=>state.LoginUser)
             variants={itemVariants}
             className="text-2xl sm:text-3xl md:text-4xl font-bold text-center text-gray-800 mb-4 sm:mb-6 tracking-tight"
           >
-            <span className="bg-clip-text text-transparent bg-gradient-to-r from-blue-600 to-indigo-600">
+            <span className="bg-clip-text text-transparent bg-gradient-to-r from-black to-black">
               {loginMode === "existing"
                 ? "Existing IETE Members"
                 : "New User Login"}
@@ -476,9 +477,9 @@ const {formData} = useSelector((state)=>state.LoginUser)
 
           {/* Toggle Existing IETE Users / New User */}
           <motion.div variants={itemVariants} className="mb-6 sm:mb-8">
-            <div className="relative flex justify-center items-center bg-gray-100/80 rounded-full p-1 w-full max-w-[240px] sm:max-w-[300px] md:max-w-[360px] mx-auto shadow-sm">
+            <div className="relative flex justify-center items-center bg-gray-100/50 rounded-full p-1 w-full max-w-[240px] sm:max-w-[300px] md:max-w-[360px] mx-auto shadow-sm">
               <motion.div
-                className="absolute top-1 bottom-1 w-1/2 bg-gradient-to-r from-blue-500 to-indigo-500 rounded-full shadow-md"
+                className="absolute top-1 bottom-1 w-1/2 bg-gradient-to-r from-gray-800 to-gray-700 rounded-full shadow-md"
                 animate={{ x: loginMode === "existing" ? "-50%" : "50%" }}
                 transition={{ type: "spring", stiffness: 300, damping: 25 }}
               />
@@ -498,7 +499,7 @@ const {formData} = useSelector((state)=>state.LoginUser)
                   loginMode === "new" ? "text-white" : "text-gray-600"
                 }`}
               >
-                New User Apply Here
+                Register User Apply
               </button>
             </div>
           </motion.div>
@@ -511,7 +512,7 @@ const {formData} = useSelector((state)=>state.LoginUser)
             >
               {/* Single Identifier Input */}
               <motion.div variants={itemVariants}>
-                <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-xs sm:text-sm font-bold text-gray-700 mb-2">
                   Email / Mobile / MemberShip ID
                 </label>
                 <input
@@ -521,14 +522,14 @@ const {formData} = useSelector((state)=>state.LoginUser)
                   value={formData?.email}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-3 rounded-lg bg-white border border-gray-200 text-gray-800 placeholder-gray-400 focus:ring-2 focus:ring-blue-400 focus:border-transparent outline-none transition-all duration-300 shadow-sm hover:shadow-md"
+                  className="w-full px-4 py-3 rounded-lg bg-gray-100 border border-gray-200 text-gray-800 placeholder-gray-400 focus:ring-2 focus:ring-blue-200 focus:border-transparent outline-none transition-all duration-300 shadow-sm hover:shadow-md"
                   placeholder="Enter email, mobile, membership id"
                 />
               </motion.div>
 
               {/* Password */}
               <motion.div variants={itemVariants}>
-                <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-xs sm:text-sm font-bold text-gray-700 mb-2">
                   Password
                 </label>
                 <input
@@ -538,7 +539,7 @@ const {formData} = useSelector((state)=>state.LoginUser)
                   onChange={handleChange}
                   // onChange={(e) => setPassword(e.target.value)}
                   required
-                  className="w-full px-4 py-3 rounded-lg bg-white border border-gray-200 text-gray-800 placeholder-gray-400 focus:ring-2 focus:ring-blue-400 focus:border-transparent outline-none transition-all duration-300 shadow-sm hover:shadow-md"
+                  className="w-full px-4 py-3 rounded-lg bg-gray-100 border border-gray-200 text-gray-800 placeholder-gray-400 focus:ring-2 focus:ring-blue-200 focus:border-transparent outline-none transition-all duration-300 shadow-sm hover:shadow-md"
                   placeholder="Enter your password"
                 />
               </motion.div>
@@ -558,7 +559,7 @@ const {formData} = useSelector((state)=>state.LoginUser)
               <motion.div variants={itemVariants}>
                 <Button
                   type="submit"
-                  className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 rounded-lg font-semibold hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105"
+                  className="w-full bg-gradient-to-r from-black to-black text-white py-3 rounded-lg font-semibold hover:from-gray-900 hover:to-gray-900 transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105"
                   isLoading={isLoading}
                 >
                   Sign In
@@ -610,7 +611,7 @@ const {formData} = useSelector((state)=>state.LoginUser)
                 <button
                   type="button"
                   // onClick={handleForgotPassword}
-                  className="text-xs sm:text-sm text-blue-600 hover:text-blue-700 font-semibold transition-colors duration-300"
+                  className="text-xs sm:text-sm text-blue-700 hover:text-blue-600 font-semibold transition-colors duration-300"
                 >
                   Forgot Password?
                 </button>
@@ -620,7 +621,7 @@ const {formData} = useSelector((state)=>state.LoginUser)
               <motion.div variants={itemVariants}>
                 <Button
                   type="submit"
-                  className="w-full bg-gradient-to-r from-blue-600 to-indigo-600 text-white py-3 rounded-lg font-semibold hover:from-blue-700 hover:to-indigo-700 transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105"
+                  className="w-full bg-gradient-to-r from-black to-black text-white py-3 rounded-lg font-semibold hover:from-gray-900 hover:to-gray-900 transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105"
                   isLoading={isLoading}
                 >
                   Sign In
@@ -655,7 +656,7 @@ const {formData} = useSelector((state)=>state.LoginUser)
             If you are first time user?{" "}
             <a
               href="/register"
-              className="text-blue-600 hover:text-blue-700 font-semibold transition-colors duration-300"
+              className="text-blue-700 hover:text-blue-600 font-semibold transition-colors duration-300"
             >
               Register Here
             </a>{" "}

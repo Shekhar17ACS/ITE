@@ -7,8 +7,6 @@ import { motion } from 'framer-motion';
 const navigation = [
   { name: 'Home', href: '/' },
   { name: 'About', href: '/about' },
-  { name: 'Membership', href: '/membership' },
-  { name: 'Eligibility Check', href: '/eligibility-check' },
   { name: 'Events', href: '/events' },
   { name: 'Contact', href: '/contact' },
 ];
@@ -18,7 +16,7 @@ export function Header() {
   const location = useLocation(); // Get current route
 
   return (
-    <header className="bg-white/20 backdrop-blur-lg  top-0 z-50">
+    <header className="bg-[#ddd9cf] backdrop-blur-lg  top-0 z-50">
       <nav className="mx-auto flex max-w-7xl items-center justify-between p-6 lg:px-8" aria-label="Global">
         <motion.div 
           className="flex lg:flex-1"
@@ -28,7 +26,7 @@ export function Header() {
         >
           <Link to="/" className="-m-1.5 p-1.5">
             <span className="sr-only">IETE</span>
-            <h1 className="text-2xl font-bold text-blue-600">IETE</h1>
+            <h1 className="text-2xl font-extrabold text-black">IETE</h1>
           </Link>
         </motion.div>
 
@@ -53,15 +51,15 @@ export function Header() {
             <Link key={item.name} to={item.href} className="relative group">
               <span className={`text-sm font-semibold leading-6 transition-colors ${
                 location.pathname === item.href
-                  ? "text-blue-600 font-bold"
-                  : "text-gray-900 hover:text-blue-600"
+                  ? "text-black font-extrabold"
+                  : "text-gray-900 hover:text-gray-700"
               }`}>
                 {item.name}
               </span>
               {location.pathname === item.href && (
                 <motion.div
                   layoutId="underline"
-                  className="absolute left-0  mt-0.1 h-0.5 bg-blue-500 rounded-full"
+                  className="absolute left-0  mt-0.1 h-0.5 bg-black rounded-full"
                   initial={{ width: 0 }}
                   animate={{ width: "100%" }}
                   transition={{ type: "spring", stiffness: 300, damping: 20 }}
@@ -80,15 +78,15 @@ export function Header() {
           <Link to="/login" className="relative group">
             <span className={`text-sm font-semibold leading-6 transition-colors ${
               location.pathname === "/login"
-                ? "text-blue-600 font-bold"
-                : "text-gray-900 hover:text-blue-600"
+                ? "text-black font-bold"
+                : "text-gray-900 hover:text-gray-900"
             }`}>
               Log in <span aria-hidden="true">&rarr;</span>
             </span>
             {location.pathname === "/login" && (
               <motion.div
                 layoutId="underline"
-                className="absolute left-0  mt-0.2 h-0.5 bg-blue-600 rounded-full"
+                className="absolute left-0  mt-0.2 h-0.5 bg-gray-900 rounded-full"
                 initial={{ width: 0 }}
                 animate={{ width: "100%" }}
                 transition={{ type: "spring", stiffness: 300, damping: 20 }}
@@ -105,7 +103,7 @@ export function Header() {
           <div className="flex items-center justify-between">
             <Link to="/" className="-m-1.5 p-1.5">
               <span className="sr-only">IETE</span>
-              <h1 className="text-2xl font-bold text-blue-600">IETE</h1>
+              <h1 className="text-2xl font-bold text-black">IETE</h1>
             </Link>
             <button
               type="button"
@@ -125,7 +123,7 @@ export function Header() {
                     to={item.href}
                     className={`-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 transition-all ${
                       location.pathname === item.href
-                        ? "text-blue-600 font-bold underline bg-gray-100"
+                        ? "text-gray-900 font-bold underline bg-gray-100"
                         : "text-gray-900 hover:bg-gray-50"
                     }`}
                     onClick={() => setMobileMenuOpen(false)}
@@ -139,7 +137,7 @@ export function Header() {
                   to="/login"
                   className={`-mx-3 block rounded-lg px-3 py-2 text-base font-semibold leading-7 transition-all ${
                     location.pathname === "/login"
-                      ? "text-blue-600 font-bold underline bg-gray-100"
+                      ? "text-gray-900 font-bold underline bg-gray-100"
                       : "text-gray-900 hover:bg-gray-50"
                   }`}
                   onClick={() => setMobileMenuOpen(false)}
