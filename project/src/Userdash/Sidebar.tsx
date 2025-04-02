@@ -18,15 +18,15 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar, activeTab, set
   ]
 
   return (
-    <div className="flex h-full w-full flex-col bg-[#242b49] shadow-lg">
+    <div className="flex h-full w-full flex-col bg-[#ffffff] shadow-lg">
       <div className="flex h-16 items-center justify-between px-4">
-        <h2 className="text-xl font-bold text-white">Dashboard</h2>
+        <h2 className="text-xl font-bold text-black">Dashboard</h2>
         {/* <button
           onClick={toggleSidebar}
           className="rounded-lg p-1.5 text-gray-300 hover:bg-blue-800 focus:outline-none"
           aria-label={isOpen ? "Close sidebar" : "Open sidebar"}
         >
-          {isOpen ? <X size={24} /> : <Menu size={24} />}
+          {isOpen ? <X size={24} /> : <Menu size={24} />} 
         </button> */}
       </div>
 
@@ -38,7 +38,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar, activeTab, set
               key={item.id}
               onClick={() => setActiveTab(item.id)}
               className={`flex w-full items-center rounded-lg px-4 py-2.5 transition-colors ${
-                activeTab === item.id ? "bg-[#4369ef] text-white" : "text-gray-300 hover:bg-blue-800"
+                activeTab === item.id ? "bg-black text-white" : "text-black hover:bg-gray-800 hover:text-white"
               }`}
             >
               <Icon size={20} className="shrink-0" />
