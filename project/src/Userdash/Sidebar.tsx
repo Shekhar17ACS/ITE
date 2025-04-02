@@ -14,20 +14,20 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar, activeTab, set
   const menuItems = [
     { id: "eligible", label: "Eligibility Form", icon: ClipboardCheck },
     { id: "form", label: "Form Tracker", icon: FileText },
-    { id: "payments", label: "Payment History", icon: CreditCard },
+    { id: "payments", label: "Payment_History", icon: CreditCard },
   ]
 
   return (
     <div className="flex h-full w-full flex-col bg-[#242b49] shadow-lg">
       <div className="flex h-16 items-center justify-between px-4">
         <h2 className="text-xl font-bold text-white">Dashboard</h2>
-        <button
+        {/* <button
           onClick={toggleSidebar}
           className="rounded-lg p-1.5 text-gray-300 hover:bg-blue-800 focus:outline-none"
           aria-label={isOpen ? "Close sidebar" : "Open sidebar"}
         >
           {isOpen ? <X size={24} /> : <Menu size={24} />}
-        </button>
+        </button> */}
       </div>
 
       <nav className="flex-1 space-y-1 px-3 py-4">

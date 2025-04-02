@@ -8,7 +8,7 @@ import OTPVerification from "./OTPVerification";
 import { useSelector, useDispatch } from "react-redux";
 import { UpdateFormData, resetFormData } from "../Redux/ReduxSlice/UserSlice";
 import { SignUp } from "../Redux/ReduxSlice/UserSlice";
-import bg1 from '../../assets/registerbg.jpg'
+import img1 from "../../assets/login1.jpg"
 
 export function RegisterForm() {
   const navigate = useNavigate();
@@ -113,12 +113,13 @@ export function RegisterForm() {
         initial="hidden"
         animate="visible"
         // className="min-h-screen flex items-center justify-center bg-[#F8F9FA] p-4 sm:p-6 md:p-8"
-        className="relative min-h-screen flex items-center justify-center bg-cover bg-center"
-         style={{ backgroundImage: `url(${bg1})` }}
+        className="w-full min-h-screen flex items-center justify-center p-4 sm:p-6 md:p-8 bg-cover bg-center bg-no-repeat"
+        style={{
+          backgroundImage: `url(${img1})`,
+        }}
       >
-        <div className="relative w-full max-w-xs sm:max-w-md md:max-w-lg lg:max-w-xl bg-white/10 backdrop-blur-md rounded-2xl shadow-xl p-6 sm:p-8 md:p-10  overflow-hidden"
-       
-        >
+            
+        <div className="relative w-full max-w-xs sm:max-w-md md:max-w-lg lg:max-w-xl backdrop-blur-md rounded-2xl shadow-xl p-6 sm:p-8 md:p-10 border border-gray-200/50 overflow-hidden">
           {/* Premium background effect */}
           <motion.div
             className="absolute inset-0 bg-gradient-to-br from-blue-100/20 via-indigo-100/20 to-gray-50/20"
@@ -130,25 +131,26 @@ export function RegisterForm() {
           <div className="relative z-10">
             <motion.h2
               variants={itemVariants}
-              className="text-xl sm:text-2xl md:text-3xl font-bold text-center text-gray-900 mb-6 sm:mb-8 tracking-tight"
+              className="text-xl sm:text-2xl md:text-3xl font-bold text-center text-gray-800 mb-6 sm:mb-8 tracking-tight"
             >
-              <span className="bg-clip-text text-transparent bg-gradient-to-r from-black via-black to-black">
+              <span className="bg-clip-text text-transparent bg-black">
                 Welcome to the IETE Register
               </span>
             </motion.h2>
 
             <form onSubmit={handleSubmit} className="space-y-6">
+              {/* Combined Title and Name (adjusted to Full Name per Redux state) */}
               <motion.div variants={itemVariants}>
                 <div className="flex space-x-2">
                   <div className="w-1/6">
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">
                       Title
                     </label>
                     <motion.select
                       name="title"
                       value={formdata?.title}
                       onChange={handleChange}
-                      className="w-full px-3 py-2.5 rounded-lg bg-white border border-gray-300 text-gray-800 focus:ring-2 focus:ring-blue-400 focus:border-transparent outline-none transition-all duration-300 shadow-sm hover:shadow-md text-sm"
+                      className="w-full px-3 py-2.5 rounded-lg bg-white border border-gray-200 text-gray-800 focus:ring-2 focus:ring-blue-400 focus:border-transparent outline-none transition-all duration-300 shadow-sm hover:shadow-md text-sm"
                       variants={inputVariants}
                       whileFocus="focus"
                       whileBlur="blur"
@@ -160,7 +162,7 @@ export function RegisterForm() {
                     </motion.select>
                   </div>
                   <div className="w-full">
-                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                    <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">
                       First Name
                     </label>
                     <motion.input
@@ -169,7 +171,7 @@ export function RegisterForm() {
                       required
                       value={formdata?.name || ""}
                       onChange={handleChange}
-                      className="w-full px-4 py-2.5 rounded-lg bg-white border border-gray-300 text-gray-800 placeholder-gray-500 focus:ring-2 focus:ring-blue-200 focus:ring-offset-2 focus:border-transparent outline-none transition-all duration-300 shadow-sm hover:shadow-md"
+                      className="w-full px-4 py-2.5 rounded-lg bg-white border border-gray-200 text-gray-800 placeholder-gray-400 focus:ring-2 focus:ring-blue-400 focus:border-transparent outline-none transition-all duration-300 shadow-sm hover:shadow-md"
                       placeholder="Enter first name"
                       variants={inputVariants}
                       whileFocus="focus"
@@ -179,8 +181,24 @@ export function RegisterForm() {
                 </div>
               </motion.div>
 
+              {/* <motion.div variants={itemVariants}>
+                <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">Username</label>
+                <motion.input
+                  name="username"
+                  type="text"
+                  required
+                  value={formdata?.username || ''}
+                  onChange={handleChange}
+                  className="w-full px-4 py-2.5 rounded-lg bg-white border border-gray-200 text-gray-800 placeholder-gray-400 focus:ring-2 focus:ring-blue-400 focus:border-transparent outline-none transition-all duration-300 shadow-sm hover:shadow-md"
+                  placeholder="Enter username"
+                  variants={inputVariants}
+                  whileFocus="focus"
+                  whileBlur="blur"
+                />
+              </motion.div> */}
+
               <motion.div variants={itemVariants}>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">
                   Middle Name
                 </label>
                 <motion.input
@@ -188,7 +206,7 @@ export function RegisterForm() {
                   type="text"
                   value={formdata?.middle_name || ""}
                   onChange={handleChange}
-                  className="w-full px-4 py-2.5 rounded-lg bg-white border border-gray-300 text-gray-800 placeholder-gray-500 focus:ring-2 focus:ring-blue-200 focus:ring-offset-2 focus:border-transparent outline-none transition-all duration-300 shadow-sm hover:shadow-md"
+                  className="w-full px-4 py-2.5 rounded-lg bg-white border border-gray-200 text-gray-800 placeholder-gray-400 focus:ring-2 focus:ring-blue-400 focus:border-transparent outline-none transition-all duration-300 shadow-sm hover:shadow-md"
                   placeholder="Enter your middle name (optional)"
                   variants={inputVariants}
                   whileFocus="focus"
@@ -197,7 +215,7 @@ export function RegisterForm() {
               </motion.div>
 
               <motion.div variants={itemVariants}>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">
                   Last Name
                 </label>
                 <motion.input
@@ -206,8 +224,8 @@ export function RegisterForm() {
                   required
                   value={formdata?.last_name || ""}
                   onChange={handleChange}
-                  className="w-full px-4 py-2.5 rounded-lg bg-white border border-gray-300 text-gray-800 placeholder-gray-500 focus:ring-2 focus:ring-blue-200 focus:ring-offset-2 focus:border-transparent outline-none transition-all duration-300 shadow-sm hover:shadow-md"
-                  placeholder="Enter your last name"
+                  className="w-full px-4 py-2.5 rounded-lg bg-white border border-gray-200 text-gray-800 placeholder-gray-400 focus:ring-2 focus:ring-blue-400 focus:border-transparent outline-none transition-all duration-300 shadow-sm hover:shadow-md"
+                  placeholder="Enter your last anme"
                   variants={inputVariants}
                   whileFocus="focus"
                   whileBlur="blur"
@@ -215,7 +233,7 @@ export function RegisterForm() {
               </motion.div>
 
               <motion.div variants={itemVariants}>
-                <label className="block text-sm font-medium text-gray-700 mb-2">
+                <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">
                   Email Address
                 </label>
                 <motion.input
@@ -224,8 +242,62 @@ export function RegisterForm() {
                   required
                   value={formdata?.email || ""}
                   onChange={handleChange}
-                  className="w-full px-4 py-2.5 rounded-lg bg-white border border-gray-300 text-gray-800 placeholder-gray-500 focus:ring-2 focus:ring-blue-200 focus:ring-offset-2 focus:border-transparent outline-none transition-all duration-300 shadow-sm hover:shadow-md"
+                  className="w-full px-4 py-2.5 rounded-lg bg-white border border-gray-200 text-gray-800 placeholder-gray-400 focus:ring-2 focus:ring-blue-400 focus:border-transparent outline-none transition-all duration-300 shadow-sm hover:shadow-md"
                   placeholder="Enter your email"
+                  variants={inputVariants}
+                  whileFocus="focus"
+                  whileBlur="blur"
+                />
+              </motion.div>
+
+              <motion.div variants={itemVariants}>
+                <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">
+                  Mobile Number
+                </label>
+                <motion.input
+                  name="mobile_number"
+                  type="tel"
+                  required
+                  value={formdata?.mobile_number || ""}
+                  onChange={handleChange}
+                  className="w-full px-4 py-2.5 rounded-lg bg-white border border-gray-200 text-gray-800 placeholder-gray-400 focus:ring-2 focus:ring-blue-400 focus:border-transparent outline-none transition-all duration-300 shadow-sm hover:shadow-md"
+                  placeholder="+91-XXXX-XXXXXX"
+                  variants={inputVariants}
+                  whileFocus="focus"
+                  whileBlur="blur"
+                />
+              </motion.div>
+
+              <motion.div variants={itemVariants}>
+                <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">
+                  Password
+                </label>
+                <motion.input
+                  name="password"
+                  type="password"
+                  required
+                  value={formdata?.password || ""}
+                  onChange={handleChange}
+                  className="w-full px-4 py-2.5 rounded-lg bg-white border border-gray-200 text-gray-800 placeholder-gray-400 focus:ring-2 focus:ring-blue-400 focus:border-transparent outline-none transition-all duration-300 shadow-sm hover:shadow-md"
+                  placeholder="Password (9+ Characters)"
+                  variants={inputVariants}
+                  whileFocus="focus"
+                  whileBlur="blur"
+                />
+              </motion.div>
+
+              <motion.div variants={itemVariants}>
+                <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">
+                  Confirm Password
+                </label>
+                <motion.input
+                  name="confirm_password"
+                  type="password"
+                  required
+                  value={formdata?.confirm_password || ""}
+                  onChange={handleChange}
+                  className="w-full px-4 py-2.5 rounded-lg bg-white border border-gray-200 text-gray-800 placeholder-gray-400 focus:ring-2 focus:ring-blue-400 focus:border-transparent outline-none transition-all duration-300 shadow-sm hover:shadow-md"
+                  placeholder="Confirm password"
                   variants={inputVariants}
                   whileFocus="focus"
                   whileBlur="blur"
@@ -235,13 +307,26 @@ export function RegisterForm() {
               <motion.div variants={itemVariants}>
                 <Button
                   type="submit"
-                  className="w-full bg-gradient-to-r from-black via-black to-black text-white py-3 rounded-lg font-semibold hover:from-gray-900 hover:to-gray-900 transition-all duration-300 shadow-md hover:shadow-lg transform "
+                  className="w-full bg-black text-white py-3 rounded-lg  transition-all duration-300 shadow-md hover:shadow-lg transform hover:scale-105"
                   isLoading={isLoading}
                 >
                   Register
                 </Button>
               </motion.div>
             </form>
+
+            <AnimatePresence>
+              {isOtpModalOpen && (
+                <motion.div
+                  initial={{ opacity: 0, scale: 0.95 }}
+                  animate={{ opacity: 1, scale: 1 }}
+                  exit={{ opacity: 0, scale: 0.95 }}
+                  transition={{ duration: 0.3, ease: "easeOut" }}
+                >
+                  {/* OTPVerification is already rendered conditionally above */}
+                </motion.div>
+              )}
+            </AnimatePresence>
 
             <motion.p
               variants={itemVariants}
@@ -256,7 +341,6 @@ export function RegisterForm() {
               </a>
             </motion.p>
           </div>
-
         </div>
       </motion.div>
     </>
