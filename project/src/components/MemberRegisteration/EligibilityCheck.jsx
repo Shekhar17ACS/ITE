@@ -29,7 +29,7 @@ const EligibilityCheck = ({ nextStep, prevStep, formData }) => {
         transition={{ delay: 0.2, duration: 0.5 }}
         className="text-3xl font-bold text-center text-gray-800 mb-4"
       >
-        {/* Eligibility Check */}
+        Eligibility Check
       </motion.h2>
 
       
@@ -44,7 +44,7 @@ const EligibilityCheck = ({ nextStep, prevStep, formData }) => {
           onClick={checkEligibility}
           className="px-6 py-3 bg-gradient-to-r from-blue-500 to-blue-600 text-white font-semibold rounded-lg shadow-md hover:opacity-90 transition-all duration-300"
         >
-          Click Here Check Eligibility
+          Check Eligibility
         </motion.button>
       </div>
 
