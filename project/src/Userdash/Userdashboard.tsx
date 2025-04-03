@@ -18,10 +18,12 @@ const mockFormData: FormData = {
   isApproved: true,
   paymentStatus: "Pending",
   steps: [
-    { id: 1, title: "Application Received", status: "completed", date: "2025-03-28" },
-    { id: 2, title: "Documents Submitted", status: "completed", date: "2025-03-30" },
-    { id: 3, title: "Payment Completed", status: "pending", date: null },
-    { id: 4, title: "Membership Alloted", status: "pending", date: null },
+    { id: 1, title: "Personal Details", status: "completed", date: "2025-03-28" },
+    { id: 2, title: "Membership Selection", status: "completed", date: "2025-03-30" },
+    { id: 3, title: "Document", status: "pending", date: null },
+    { id: 4, title: "Eligibility Check", status: "pending", date: null },
+    { id: 4, title: "Summury", status: "pending", date: null },
+    { id: 4, title: "Payment", status: "pending", date: null },
   ],
   images: [
     "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?q=80&w=200&auto=format",
@@ -115,17 +117,6 @@ function Userdashboard() {
 
         <main className="flex-1 overflow-y-auto p-4 md:p-6">
           <div className="mx-auto max-full">
-            {activeTab !== "eligible" && (
-              <div className="mb-4 flex justify-end">
-                <button
-                  onClick={() => setActiveTab("eligible")}
-                  className="rounded-lg bg-blue-500 px-4 py-2 text-white transition-colors hover:bg-blue-600"
-                >
-                  Go Back
-                </button>
-              </div>
-            )}
-
             {activeTab === "eligible" && <EligibleForm />}
             {activeTab === "form" && <FormTracker formData={mockFormData} />}
             {activeTab === "payments" && <PaymentHistory payments={mockPayments} />}
