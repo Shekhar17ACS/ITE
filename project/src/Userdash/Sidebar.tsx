@@ -69,7 +69,7 @@ const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar, activeTab, set
   const menuItems = [
     { id: "eligible", label: "Eligibility Form", icon: ClipboardCheck },
     { id: "form", label: "Form Tracker", icon: FileText },
-    { id: "payments", label: "Payment_History", icon: CreditCard },
+    { id: "payments", label: "Payment History", icon: CreditCard },
   ]
 
   return (
