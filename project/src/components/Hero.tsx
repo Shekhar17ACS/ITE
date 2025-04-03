@@ -60,13 +60,13 @@ export function Hero() {
           >
             <Link
               to="/about"
-              className="px-8 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors"
+              className="px-8 py-3 bg-gray-300 text-black font-semibold rounded-lg hover:text-blue-900 transition-colors"
             >
               Learn More
             </Link>
             <Link
-              to="/membership"
-              className="px-8 py-3 bg-white text-blue-600 rounded-lg hover:bg-gray-100 transition-colors"
+              to="/register"
+              className="px-8 py-3 bg-white text-blue-900 font-semibold rounded-lg hover:bg-gray-100 transition-colors"
             >
               Join IETE
             </Link>
