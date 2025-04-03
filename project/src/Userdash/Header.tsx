@@ -33,7 +33,7 @@ const Header: React.FC<HeaderProps> = ({ email, onLogout, onMenuClick, isSidebar
           <span className="hidden text-sm text-gray-600 sm:inline-block sm:text-base">{email}</span>
           <button
             onClick={handlelogout}
-            className="flex items-center space-x-1 rounded-lg px-2 py-2 text-gray-600 transition-colors hover:bg-gray-100 sm:space-x-2 sm:px-3"
+            className="flex items-center space-x-1 rounded-lg px-2 py-2 text-gray-900 transition-colors hover:bg-gray-300 sm:space-x-2 sm:px-3"
           >
             <LogOut size={20} />
             <span className="hidden sm:inline">Logout</span>

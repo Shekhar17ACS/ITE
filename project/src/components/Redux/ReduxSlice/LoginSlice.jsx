@@ -67,7 +67,7 @@ const LoginSlice = createSlice({
         state.loading = false;
         if (action.payload !== "Login successful.") {
           state.error = action.error.message;
-          toast.error(action.error.message, "user Login failed")
+          // toast.error(action.error.message, "user Login failed")
         }
         // state.error = action.error.message;
         // // toast.error(error?.response?.message,"user Login successfully")
