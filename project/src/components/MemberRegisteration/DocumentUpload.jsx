@@ -181,6 +181,7 @@
 // };
 
 // export default DocumentUpload;
+
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 
@@ -193,6 +194,8 @@ const DocumentUpload = ({ nextStep, prevStep, formData, setFormData }) => {
   const [dragActive, setDragActive] = useState(false);
 
   const fileFields = [
+    { name: "photo", label: "Photo" },
+    { name: "signature", label: "Signature" },
     { name: "aadhaar", label: "Aadhaar Card" },
     { name: "pan", label: "PAN Card" },
     { name: "tenthCert", label: "10th Certificate" },

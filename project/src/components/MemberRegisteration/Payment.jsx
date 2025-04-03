@@ -100,7 +100,7 @@ const Payment = ({ prevStep, formData }) => {
   const handlePayment = async () => {
     const options = {
       key: "rzp_test_U4bdC62vxssMpp",
-      amount: 1000 * 100,
+      amount: 11800 * 100,
       currency: "INR",
       name: "Course Registration",
       description: "Payment for Registration",
