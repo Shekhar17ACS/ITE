@@ -1,13 +1,13 @@
-import type React from "react"
-import type { PaymentHistory as PaymentHistoryType } from "../types"
+import React from "react"
+// import { PaymentHistory as PaymentHistoryType } from "../types"
 import { CheckCircle, Clock, XCircle, Download, Info } from "lucide-react"
 
-interface PaymentHistoryProps {
-  payments: PaymentHistoryType[]
-}
+// interface PaymentHistoryProps {
+//   payments: PaymentHistoryType[]
+// }
 
-const PaymentHistory: React.FC<PaymentHistoryProps> = ({ payments }) => {
-  const getStatusIcon = (status: string) => {
+const PaymentHistory= ({ payments }) => {
+  const getStatusIcon = (status) => {
     switch (status.toLowerCase()) {
       case "completed":
         return <CheckCircle className="text-green-600" />

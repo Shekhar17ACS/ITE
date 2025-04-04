@@ -2,13 +2,13 @@ import { forwardRef } from 'react';
 import { twMerge } from 'tailwind-merge';
 import { motion } from 'framer-motion';
 
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'primary' | 'secondary' | 'outline';
-  size?: 'sm' | 'md' | 'lg';
-  isLoading?: boolean;
-}
+// interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+//   variant?: 'primary' | 'secondary' | 'outline';
+//   size?: 'sm' | 'md' | 'lg';
+//   isLoading?: boolean;
+// }
 
-export const Button = forwardRef<HTMLButtonElement, ButtonProps>(
+export const Button = forwardRef(
   ({ className, variant = 'primary', size = 'md', isLoading, children, ...props }, ref) => {
     const baseStyles = 'inline-flex items-center justify-center rounded-md font-medium transition-colors focus:outline-none focus:ring-2 focus:ring-offset-2';
     

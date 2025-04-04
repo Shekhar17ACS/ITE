@@ -1,17 +1,17 @@
 "use client"
 
-import type React from "react"
+import React from "react"
 import { LogOut, Menu } from "lucide-react"
 import { useNavigate } from "react-router-dom"
 
-interface HeaderProps {
-  email: string
-  onLogout: () => void
-  onMenuClick: () => void
-  isSidebarOpen: boolean
-}
+// interface HeaderProps {
+//   email: string
+//   onLogout: () => void
+//   onMenuClick: () => void
+//   isSidebarOpen: boolean
+// }
 
-const Header: React.FC<HeaderProps> = ({ email, onLogout, onMenuClick, isSidebarOpen }) => {
+const Header= ({ email, onLogout, onMenuClick, isSidebarOpen }) => {
   const navigate= useNavigate();
    const handlelogout= ()=>{
       onLogout();

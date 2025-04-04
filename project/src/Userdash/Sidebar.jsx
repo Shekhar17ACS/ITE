@@ -53,23 +53,22 @@
 
 // export default Sidebar
 
-"use client"
 
-import type React from "react"
+import React from "react"
 import { Menu, X, FileText, ClipboardCheck, CreditCard } from "lucide-react"
 
-interface SidebarProps {
-  isOpen: boolean
-  toggleSidebar: () => void
-  activeTab: string
-  setActiveTab: (tab: string) => void
-}
+// interface SidebarProps {
+//   isOpen: boolean
+//   toggleSidebar: () => void
+//   activeTab: string
+//   setActiveTab: (tab: string) => void
+// }
 
-const Sidebar: React.FC<SidebarProps> = ({ isOpen, toggleSidebar, activeTab, setActiveTab }) => {
+const Sidebar= ({ isOpen, toggleSidebar, activeTab, setActiveTab }) => {
   const menuItems = [
     { id: "eligible", label: "Eligibility Form", icon: ClipboardCheck },
     { id: "form", label: "Form Tracker", icon: FileText },
-    { id: "payments", label: "Payment History", icon: CreditCard },
+    { id: "payments", label: "PaymentHistory", icon: CreditCard },
   ]
 
   return (

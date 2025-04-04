@@ -1,14 +1,13 @@
-"use client"
 
 import { useState, useEffect } from "react"
-import Header from "./Header"
-import Sidebar from "./Sidebar"
-import FormTracker from "./FormTracker"
-import PaymentHistory from "./PaymentHistory"
+import Header from "./Header.jsx"
+import Sidebar from "./Sidebar.jsx"
+import FormTracker from "./FormTracker.jsx"
+import PaymentHistory from "./PaymentHistory.jsx"
 import EligibleForm from "../components/pages/MultiStepForm.jsx"
-import type { FormData, PaymentHistory as PaymentHistoryType } from "../types/index"
+// import type { FormData, PaymentHistory as PaymentHistoryType } from "../types/index"
 
-const mockFormData: FormData = {
+const mockFormData = {
   applicationNo: "APP596611",
   email: "Shekharsharma17800@gmail.com",
   userId: "USR-2025-0015",
@@ -31,7 +30,7 @@ const mockFormData: FormData = {
   ],
 }
 
-const mockPayments: PaymentHistoryType[] = [
+const mockPayments = [
   {
     id: "1",
     applicationNo: "APP596611",
