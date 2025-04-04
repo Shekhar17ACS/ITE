@@ -279,7 +279,7 @@ const FormPreview = ({ nextStep, prevStep, formData }) => {
                     <p className="text-xs sm:text-sm text-gray-800 font-light truncate mt-1 mb-2">
                       {file.name}
                     </p>
-                    {file.type.includes("image") ? (
+                    {file && file.type && file.type.includes("image") ? (
                       <img
                         src={URL.createObjectURL(file)}
                         alt={file.name}
