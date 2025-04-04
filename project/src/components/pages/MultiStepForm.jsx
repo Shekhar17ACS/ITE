@@ -166,7 +166,7 @@ import PersonalDetails from "../MemberRegisteration/PersonalDetails";
 import CourseSelection from "../MemberRegisteration/CourseSelection";
 import DocumentUpload from "../MemberRegisteration/DocumentUpload";
 import EligibilityCheck from "../MemberRegisteration/EligibilityCheck";
-import FormPreview from "../MemberRegisteration/FormPreview"; // Import the new component
+import FormPreview from "../MemberRegisteration/FormPreview";
 import Payment from "../MemberRegisteration/Payment";
 import Stepper from "../MemberRegisteration/Stepper";
 
@@ -174,35 +174,6 @@ const MultiStepForm = () => {
   const [step, setStep] = useState(() => Number(localStorage.getItem("currentStep")) || 1);
   const [formData, setFormData] = useState(() => JSON.parse(localStorage.getItem("formData")) || {});
   const [completedSteps, setCompletedSteps] = useState(() => JSON.parse(localStorage.getItem("completedSteps")) || []);
-  const [loading, setLoading] = useState(false);
-
-  useEffect(() => {
-    const fetchUserDetails = async () => {
-      setLoading(true);
-      try {
-        const response = await fetch("https://jsonplaceholder.typicode.com/users/10");
-        const userData = await response.json();
-        console.log("userData", userData);
-
-        setFormData((prevData) => ({
-          ...prevData,
-          fullName: userData.name,
-          email: userData.email,
-          phone: userData.phone,
-          address: userData.address.street + ", " + userData.address.city,
-        }));
-
-        localStorage.setItem("formData", JSON.stringify(formData));
-      } catch (error) {
-        console.error("Error fetching user details:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    fetchUserDetails();
-  }, []);
-
-  console.log("formData");
 
   useEffect(() => {
     localStorage.setItem("currentStep", step);
@@ -257,8 +228,6 @@ const MultiStepForm = () => {
       
       <div className="flex-1 flex justify-center bg-gray-100">
         <div className="w-full max-w-3xl p-6 bg-gray-100">
-          {loading ? <p className="text-center">Fetching user details...</p> : null}
-
           {step === 1 && (
             <PersonalDetails
               nextStep={handleNextStep}
