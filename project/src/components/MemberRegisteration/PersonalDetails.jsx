@@ -168,10 +168,19 @@ import { motion } from "framer-motion";
 const PersonalDetails = ({ nextStep, prevStep, formData, setFormData }) => {
   const [error, setError] = useState("");
 
+  // const handleChange = (e) => {
+  //   const { name, value } = e.target;
+  //   const newValue = e.target.type === "text" ? value.toUpperCase() : value;
+  //   setFormData({ ...formData, [name]: newValue });
+  // };
   const handleChange = (e) => {
     const { name, value } = e.target;
-    const newValue = e.target.type === "text" ? value.toUpperCase() : value;
-    setFormData({ ...formData, [name]: newValue });
+    if (name === "country") {
+      setFormData({ ...formData, country: value });
+    } else {
+      const newValue = e.target.type === "text" ? value.toUpperCase() : value;
+      setFormData({ ...formData, [name]: newValue });
+    }
   };
 
   const handleSubmit = () => {
@@ -202,6 +211,37 @@ const PersonalDetails = ({ nextStep, prevStep, formData, setFormData }) => {
     setFormData({ ...formData });
     nextStep();
   };
+  const countries = [
+    "Afghanistan", "Albania", "Algeria", "Andorra", "Angola", "Antigua and Barbuda", 
+    "Argentina", "Armenia", "Australia", "Austria", "Azerbaijan", "Bahamas", "Bahrain", 
+    "Bangladesh", "Barbados", "Belarus", "Belgium", "Belize", "Benin", "Bhutan", "Bolivia", 
+    "Bosnia and Herzegovina", "Botswana", "Brazil", "Brunei", "Bulgaria", "Burkina Faso", 
+    "Burundi", "Cambodia", "Cameroon", "Canada", "Central African Republic", "Chad", "Chile", 
+    "China", "Colombia", "Comoros", "Congo (Brazzaville)", "Congo (Kinshasa)", "Cook Islands", 
+    "Costa Rica", "Côte d'Ivoire", "Croatia", "Cuba", "Cyprus", "Czech Republic", "Denmark", 
+    "Djibouti", "Dominica", "Dominican Republic", "Ecuador", "Egypt", "El Salvador", 
+    "Equatorial Guinea", "Eritrea", "Estonia", "Ethiopia", "Fiji", "Finland", "France", 
+    "Gabon", "Gambia", "Georgia", "Germany", "Ghana", "Greece", "Grenada", "Guatemala", 
+    "Guinea", "Guinea-Bissau", "Guyana", "Haiti", "Honduras", "Hungary", "Iceland", "India", 
+    "Indonesia", "Iran", "Iraq", "Ireland", "Israel", "Italy", "Jamaica", "Japan", "Jordan", 
+    "Kazakhstan", "Kenya", "Kiribati", "North Korea", "South Korea", "Kosovo", "Kuwait", 
+    "Kyrgyzstan", "Laos", "Latvia", "Lebanon", "Lesotho", "Liberia", "Libya", "Liechtenstein", 
+    "Lithuania", "Luxembourg", "North Macedonia", "Madagascar", "Malawi", "Malaysia", "Maldives", 
+    "Mali", "Malta", "Marshall Islands", "Mauritania", "Mauritius", "Mexico", "Micronesia", 
+    "Moldova", "Monaco", "Mongolia", "Montenegro", "Morocco", "Mozambique", "Myanmar", 
+    "Namibia", "Nauru", "Nepal", "Netherlands", "New Zealand", "Nicaragua", "Niger", "Nigeria", 
+    "Norway", "Oman", "Pakistan", "Palau", "Palestine", "Panama", "Papua New Guinea", 
+    "Paraguay", "Peru", "Philippines", "Poland", "Portugal", "Qatar", "Romania", "Russia", 
+    "Rwanda", "Saint Kitts and Nevis", "Saint Lucia", "Saint Vincent and the Grenadines", 
+    "Samoa", "San Marino", "Sao Tome and Principe", "Saudi Arabia", "Senegal", "Serbia", 
+    "Seychelles", "Sierra Leone", "Singapore", "Slovakia", "Slovenia", "Solomon Islands", 
+    "Somalia", "South Africa", "South Sudan", "Spain", "Sri Lanka", "Sudan", "Suriname", 
+    "Sweden", "Switzerland", "Syria", "Taiwan", "Tajikistan", "Tanzania", "Thailand", "Togo", 
+    "Tonga", "Trinidad and Tobago", "Tunisia", "Turkey", "Turkmenistan", "Tuvalu", "Uganda", 
+    "Ukraine", "United Arab Emirates", "United Kingdom", "United States", "Uruguay", 
+    "Uzbekistan", "Vanuatu", "Vatican City", "Venezuela", "Vietnam", "Yemen", "Zambia", "Zimbabwe"
+];
+
 
   return (
     <motion.div
@@ -450,7 +490,7 @@ const PersonalDetails = ({ nextStep, prevStep, formData, setFormData }) => {
           </select>
         </motion.div>
 
-        <motion.div
+        {/* <motion.div
           initial={{ opacity: 0, x: -20 }}
           animate={{ opacity: 1, x: 0 }}
           transition={{ delay: 0.3, duration: 0.5 }}
@@ -470,7 +510,53 @@ const PersonalDetails = ({ nextStep, prevStep, formData, setFormData }) => {
             className="block w-full px-4 py-2 border-1 border-indigo-200 rounded-sm bg-gray-50 focus:outline-none focus:ring-1 focus:ring-blue-300 focus:border-indigo-200 sm:text-sm transition duration-150 ease-in-out"
             style={{ fontFamily: "'Poppins', sans-serif", fontWeight: "300" }}
           />
-        </motion.div>
+        </motion.div> */}
+        <motion.div
+  initial={{ opacity: 0, x: -20 }}
+  animate={{ opacity: 1, x: 0 }}
+  transition={{ delay: 0.3, duration: 0.5 }}
+  className="relative"
+>
+  <label
+    className="block text-sm font-medium text-gray-700 mb-1 ml-2"
+    style={{ fontFamily: "'Poppins', sans-serif", fontWeight: "300" }}
+  >
+    Country/Nation<span style={{ color: "red" }}>*</span>
+  </label>
+  <input
+    type="text"
+    name="country"
+    value={formData.country || ""}
+    onChange={handleChange}
+    placeholder="Search Country"
+    className="block w-full px-4 py-2 border-1 border-indigo-200 rounded-sm bg-gray-50 focus:outline-none focus:ring-1 focus:ring-blue-300 focus:border-indigo-200 sm:text-sm transition duration-150 ease-in-out"
+    style={{ fontFamily: "'Poppins', sans-serif", fontWeight: "300" }}
+  />
+  {formData.country && (
+    <ul className="absolute bg-white border-1 border-indigo-200 rounded-sm w-full mt-2"   style={{
+      top: "100%",
+      left: 0,
+      zIndex: 10,
+    }}>
+      {countries
+        .filter((country) =>
+          country.toLowerCase().includes(formData.country.toLowerCase())
+        )
+        .map((country) => (
+          <li
+            key={country}
+            className="px-4 py-2 cursor-pointer hover:bg-gray-100"
+            onClick={() => {
+              setFormData({ ...formData, country });
+              document.querySelector('input[name="country"]').blur();
+            }}
+          >
+            {country}
+          </li>
+        ))}
+    </ul>
+  )}
+</motion.div>
 
         <motion.div
           initial={{ opacity: 0, x: -20 }}

@@ -310,7 +310,7 @@ const DocumentUpload = ({ nextStep, prevStep, formData, setFormData }) => {
                 <FiLoader className="animate-spin text-indigo-500 text-4xl mb-2" />
               ) : files[field.name] ? (
                 <div className="flex flex-col items-center">
-                  {files[field.name].type.includes("image") ? (
+                  {files[field.name] && files[field.name].type && files[field.name].type.includes("image") ? (
                     <img
                       src={URL.createObjectURL(files[field.name])}
                       alt="preview"
