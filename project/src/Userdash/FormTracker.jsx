@@ -1,18 +1,18 @@
-import type React from "react"
-import type { FormData } from "../types"
+import  React from "react"
+// import  { FormData } from "../types"
 import { CheckCircle, Clock, XCircle, AlertCircle, Lock, Download } from "lucide-react"
 import { useState } from "react"
 import { saveAs } from "file-saver"
 import * as XLSX from "xlsx"
 import jsPDF from "jspdf"
 
-interface FormTrackerProps {
-  formData: FormData
-}
+// interface FormTrackerProps {
+//   formData: FormData
+// }
 
-const FormTracker: React.FC<FormTrackerProps> = ({ formData }) => {
+const FormTracker = ({ formData }) => {
   const [isDropdownOpen, setDropdownOpen] = useState(false);
-  const handleExport = (format: string) => {
+  const handleExport = (format) => {
     if (format === "pdf") {
       const doc = new Blob([JSON.stringify(formData, null, 2)], { type: "application/pdf" })
       saveAs(doc, "Application_Status.pdf")
@@ -30,7 +30,7 @@ const FormTracker: React.FC<FormTrackerProps> = ({ formData }) => {
     }
     setDropdownOpen(false)
   }
-  const getStatusIcon = (status: string) => {
+  const getStatusIcon = (status) => {
     switch (status.toLowerCase()) {
       case "completed":
         return <CheckCircle className="h-8 w-8 text-green-600" />
@@ -41,7 +41,7 @@ const FormTracker: React.FC<FormTrackerProps> = ({ formData }) => {
     }
   }
 
-  const getStatusBadge = (status: string) => {
+  const getStatusBadge = (status) => {
     switch (status) {
       case "In Progress":
         return <span className="rounded-full bg-blue-100 px-3 py-1 text-sm font-medium text-blue-800">In Progress</span>
@@ -54,7 +54,7 @@ const FormTracker: React.FC<FormTrackerProps> = ({ formData }) => {
     }
   }
 
-  const getPaymentStatusBadge = (status: string) => {
+  const getPaymentStatusBadge = (status) => {
     switch (status) {
       case "Success":
         return <span className="rounded-full bg-green-100 px-3 py-1 text-sm font-medium text-green-800">Success</span>
