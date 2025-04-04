@@ -94,6 +94,181 @@
 
 
 
+
+// import React, { useState } from "react";
+// import { motion } from "framer-motion";
+
+// const CourseSelection = ({ nextStep, prevStep, formData, setFormData }) => {
+//   const courses = [
+//     {
+//       name: "FELLOW (F)",
+//       description: "Elite membership for seasoned professionals with 10+ years of impactful experience.",
+//       price: "₹11,800",
+//       eligibility: "Requires BE/B.Tech/ME/M.Tech/MS or equivalent, with a senior leadership role. Age: 35+",
+//     },
+//     {
+//       name: "MEMBER (M)",
+//       description: "For accomplished individuals with 5+ years of proven expertise.",
+//       price: "₹9,600",
+//       eligibility: "Requires BE/B.Tech/ME/M.Tech/MS or equivalent. Age: 26+",
+//     },
+//     {
+//       name: "ASSOCIATE MEMBER (AM)",
+//       description: "For rising professionals building their career foundation.",
+//       price: "₹8,120",
+//       eligibility: "Requires BE/B.Tech/ME/M.Tech/MS or equivalent. Age: 21+",
+//     },
+//     {
+//       name: "ASSOCIATE (A)",
+//       description: "For versatile contributors excelling in electronics or allied fields.",
+//       price: "₹4,430",
+//       eligibility: "Open to commerce, finance, law, or IETE postgraduate enrollees. Age: 30+",
+//     },
+//   ];
+
+//   const [selectedCourse, setSelectedCourse] = useState(formData.course || "");
+
+//   const handleSubmit = () => {
+//     if (!selectedCourse) {
+//       alert("Please select a membership tier to proceed.");
+//       return;
+//     }
+//     setFormData({ ...formData, course: selectedCourse });
+//     nextStep();
+//   };
+
+//   return (
+//     <motion.div
+//       initial={{ opacity: 0, y: 50 }}
+//       animate={{ opacity: 1, y: 0 }}
+//       exit={{ opacity: 0, y: 50 }}
+//       transition={{ duration: 1, ease: [0.6, -0.05, 0.01, 0.99] }}
+//       className="max-w-5xl w-full mx-auto my-0 p-8 sm:p-10 md:p-12 bg-gray-100 rounded-3xl shadow-3xl overflow-hidden relative"
+//     >
+//       {/* Elegant Background Layers */}
+//       <div className="absolute inset-0  pointer-events-none" />
+//       <div className="absolute inset-0  pointer-events-none" />
+
+//       {/* Header */}
+//       <motion.h2
+//         initial={{ opacity: 0, y: -50 }}
+//         animate={{ opacity: 1, y: 0 }}
+//         transition={{ delay: 0.3, duration: 0.8, ease: "easeOut" }}
+//         className="text-4xl sm:text-5xl font-extrabold text-center text-gray-800 mb-12 sm:mb-16 tracking-tight relative"
+//         style={{ fontFamily: "'Poppins', sans-serif" }}
+//       >
+//         Choose Your Membership
+//         <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-32 h-1 bg-gradient-to-r from-indigo-500 via-purple-600 to-indigo-700 rounded-full -mb-4 opacity-80" />
+//       </motion.h2>
+
+//       {/* Course Cards */}
+//       <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+//         {courses.map((course, index) => (
+//           <motion.div
+//             key={index}
+//             onClick={() => setSelectedCourse(course.name)}
+//             whileHover={{
+//               scale: 1.04,
+//               boxShadow: "0 25px 50px rgba(0, 0, 0, 0.1), 0 0 30px rgba(79, 70, 229, 0.08)",
+//             }}
+//             whileTap={{ scale: 0.96 }}
+//             initial={{ opacity: 0, y: 40 }}
+//             animate={{ opacity: 1, y: 0 }}
+//             transition={{ delay: index * 0.2, duration: 0.7, ease: "easeOut" }}
+//             className={`relative cursor-pointer p-6 sm:p-8 rounded-2xl border-2 bg-white shadow-lg transition-all duration-500 flex flex-col justify-between ${
+//               selectedCourse === course.name
+//                 ? "border-indigo-300/80 bg-gradient-to-br from-indigo-50/70 via-white to-purple-50/70 shadow-2xl"
+//                 : "border-gray-100/80 hover:border-indigo-200 hover:shadow-xl"
+//             }`}
+//           >
+//             {/* Selection Badge */}
+//             {selectedCourse === course.name && (
+//               <motion.div
+//                 initial={{ scale: 0, rotate: -45 }}
+//                 animate={{ scale: 1, rotate: 0 }}
+//                 transition={{ duration: 0.4 }}
+//                 className="absolute -top-3 -right-3 bg-indigo-600 text-white text-xs font-semibold px-3 py-1 rounded-full shadow-lg flex items-center"
+//               >
+//                 <span>✓ Chosen</span>
+//               </motion.div>
+//             )}
+
+//             <div>
+//               <h3
+//                 className={`text-xl sm:text-2xl font-bold ${
+//                   selectedCourse === course.name ? "text-indigo-700" : "text-gray-900"
+//                 }`}
+//                 style={{ fontFamily: "'Poppins', sans-serif" }}
+//               >
+//                 {course.name}
+//               </h3>
+//               <p
+//                 className={`mt-4 text-sm leading-relaxed ${
+//                   selectedCourse === course.name ? "text-indigo-600" : "text-gray-600"
+//                 }`}
+//                 style={{ fontFamily: "'Roboto', sans-serif" }}
+//               >
+//                 {course.description}
+//               </p>
+//               <p
+//                 className={`mt-3 text-xs italic ${
+//                   selectedCourse === course.name ? "text-indigo-500" : "text-gray-500"
+//                 }`}
+//                 style={{ fontFamily: "'Roboto', sans-serif" }}
+//               >
+//                 {course.eligibility}
+//               </p>
+//             </div>
+//             <div className="mt-6">
+//               <motion.div
+//                 className={`inline-flex items-center justify-center px-5 py-2.5 rounded-full text-sm font-semibold shadow-md transition-all duration-300 ${
+//                   selectedCourse === course.name
+//                     ? "bg-gradient-to-r from-indigo-600 to-purple-700 text-white"
+//                     : "bg-indigo-100 text-indigo-700 hover:bg-indigo-200"
+//                 }`}
+//                 style={{ fontFamily: "'Poppins', sans-serif" }}
+//               >
+//                 {course.price}
+//               </motion.div>
+//             </div>
+//           </motion.div>
+//         ))}
+//       </div>
+
+//       {/* Buttons */}
+//       <div className="w-full py-8 sm:py-10 flex flex-col sm:flex-row justify-between items-center mt-12 gap-6 sm:gap-0">
+//         <motion.button
+//           whileHover={{ scale: 1.06, boxShadow: "0 15px 30px rgba(0, 0, 0, 0.15)" }}
+//           whileTap={{ scale: 0.94 }}
+//           onClick={prevStep}
+//           className="w-full sm:w-auto px-8 py-3 bg-gradient-to-r from-gray-800 to-gray-900 text-white font-semibold rounded-full shadow-xl hover:from-gray-900 hover:to-black transition-all duration-500 border border-gray-700/30"
+//           style={{ fontFamily: "'Poppins', sans-serif" }}
+//         >
+//           ← Previous Step
+//         </motion.button>
+//         <motion.button
+//           whileHover={{ scale: 1.06, boxShadow: "0 15px 30px rgba(79, 70, 229, 0.3)" }}
+//           whileTap={{ scale: 0.94 }}
+//           onClick={handleSubmit}
+//           disabled={!selectedCourse}
+//           className={`w-full sm:w-auto px-8 py-3 font-semibold rounded-full shadow-xl transition-all duration-500 ${
+//             selectedCourse
+//               ? "bg-gradient-to-r from-indigo-600 to-purple-700 text-white hover:from-indigo-700 hover:to-purple-800 border border-indigo-600/40"
+//               : "bg-gray-200 text-gray-400 cursor-not-allowed border border-gray-300/50"
+//           }`}
+//           style={{ fontFamily: "'Poppins', sans-serif" }}
+//         >
+//           Confirm & Proceed →
+//         </motion.button>
+//       </div>
+//     </motion.div>
+//   );
+// };
+
+// export default CourseSelection;
+
+
+
 import React, { useState } from "react";
 import { motion } from "framer-motion";
 
@@ -101,27 +276,47 @@ const CourseSelection = ({ nextStep, prevStep, formData, setFormData }) => {
   const courses = [
     {
       name: "FELLOW (F)",
-      description: "Elite membership for seasoned professionals with 10+ years of impactful experience.",
-      price: "₹11,800",
-      eligibility: "Requires BE/B.Tech/ME/M.Tech/MS or equivalent, with a senior leadership role. Age: 35+",
+      description: "Elite membership for seasoned professionals.",
+      price: "₹11,800/month",
+      features: [
+        "Age: 35+ years",
+        "Qualification: BE/B.Tech/ME/M.Tech/MS or equivalent",
+        "Experience: 10+ years (5 years in high-responsibility role)",
+        "Occupation: High-responsibility position (or retired)",
+        "Proposed by 2 Fellows",
+      ],
     },
     {
       name: "MEMBER (M)",
-      description: "For accomplished individuals with 5+ years of proven expertise.",
-      price: "₹9,600",
-      eligibility: "Requires BE/B.Tech/ME/M.Tech/MS or equivalent. Age: 26+",
+      description: "For accomplished individuals with expertise.",
+      price: "₹9,600/month",
+      features: [
+        "Age: 26+ years",
+        "Qualification: BE/B.Tech/ME/M.Tech/MS or equivalent",
+        "Experience: 5+ years (4 years in responsible role)",
+        "Significant contribution in Electronics/Telecom",
+        "Proposed by 2 Members",
+      ],
     },
     {
       name: "ASSOCIATE MEMBER (AM)",
-      description: "For rising professionals building their career foundation.",
-      price: "₹8,120",
-      eligibility: "Requires BE/B.Tech/ME/M.Tech/MS or equivalent. Age: 21+",
+      description: "For rising professionals building their career.",
+      price: "₹8,120/month",
+      features: [
+        "Age: 21+ years",
+        "Qualification: BE/B.Tech/ME/M.Tech/MS or equivalent",
+        "Proposed by 2 Associate Members",
+      ],
     },
     {
       name: "ASSOCIATE (A)",
-      description: "For versatile contributors excelling in electronics or allied fields.",
-      price: "₹4,430",
-      eligibility: "Open to commerce, finance, law, or IETE postgraduate enrollees. Age: 30+",
+      description: "For versatile contributors in allied fields.",
+      price: "₹4,430/month",
+      features: [
+        "Age: 30+ years",
+        "Useful service in Electronics/Telecom or allied fields",
+        "OR enrolled in IETE postgraduate course",
+      ],
     },
   ];
 
@@ -142,11 +337,11 @@ const CourseSelection = ({ nextStep, prevStep, formData, setFormData }) => {
       animate={{ opacity: 1, y: 0 }}
       exit={{ opacity: 0, y: 50 }}
       transition={{ duration: 1, ease: [0.6, -0.05, 0.01, 0.99] }}
-      className="max-w-5xl w-full mx-auto my-0 p-8 sm:p-10 md:p-12 bg-gray-100 rounded-3xl shadow-3xl overflow-hidden relative"
+      className="max-w-6xl w-full mx-auto my-8 p-6 sm:p-10 bg-gray-100 rounded-3xl overflow-hidden relative"
     >
-      {/* Elegant Background Layers */}
+      {/* Background Effects */}
       <div className="absolute inset-0  pointer-events-none" />
-      <div className="absolute inset-0  pointer-events-none" />
+      <div className="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,255,255,0.3),transparent)] pointer-events-none" />
 
       {/* Header */}
       <motion.h2
@@ -160,8 +355,8 @@ const CourseSelection = ({ nextStep, prevStep, formData, setFormData }) => {
         <span className="absolute bottom-0 left-1/2 transform -translate-x-1/2 w-32 h-1 bg-gradient-to-r from-indigo-500 via-purple-600 to-indigo-700 rounded-full -mb-4 opacity-80" />
       </motion.h2>
 
-      {/* Course Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-10">
+      {/* Course Cards in Two Rows */}
+      <div className="grid grid-cols-1 sm:grid-cols-2 gap-8">
         {courses.map((course, index) => (
           <motion.div
             key={index}
@@ -171,28 +366,18 @@ const CourseSelection = ({ nextStep, prevStep, formData, setFormData }) => {
               boxShadow: "0 25px 50px rgba(0, 0, 0, 0.1), 0 0 30px rgba(79, 70, 229, 0.08)",
             }}
             whileTap={{ scale: 0.96 }}
-            initial={{ opacity: 0, y: 40 }}
+            initial={{ opacity: 0, y: 50 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.2, duration: 0.7, ease: "easeOut" }}
-            className={`relative cursor-pointer p-6 sm:p-8 rounded-2xl border-2 bg-white shadow-lg transition-all duration-500 flex flex-col justify-between ${
+            className={`relative p-6 sm:p-8 rounded-2xl border-2 bg-white shadow-lg transition-all duration-500 ${
               selectedCourse === course.name
                 ? "border-indigo-300/80 bg-gradient-to-br from-indigo-50/70 via-white to-purple-50/70 shadow-2xl"
                 : "border-gray-100/80 hover:border-indigo-200 hover:shadow-xl"
             }`}
           >
-            {/* Selection Badge */}
-            {selectedCourse === course.name && (
-              <motion.div
-                initial={{ scale: 0, rotate: -45 }}
-                animate={{ scale: 1, rotate: 0 }}
-                transition={{ duration: 0.4 }}
-                className="absolute -top-3 -right-3 bg-indigo-600 text-white text-xs font-semibold px-3 py-1 rounded-full shadow-lg flex items-center"
-              >
-                <span>✓ Chosen</span>
-              </motion.div>
-            )}
 
-            <div>
+            {/* Card Content */}
+            <div className="text-center">
               <h3
                 className={`text-xl sm:text-2xl font-bold ${
                   selectedCourse === course.name ? "text-indigo-700" : "text-gray-900"
@@ -202,40 +387,69 @@ const CourseSelection = ({ nextStep, prevStep, formData, setFormData }) => {
                 {course.name}
               </h3>
               <p
-                className={`mt-4 text-sm leading-relaxed ${
-                  selectedCourse === course.name ? "text-indigo-600" : "text-gray-600"
+                className={`mt-3 text-lg ${
+                  selectedCourse === course.name ? "text-indigo-600 font-bold" : "text-gray-600 font-bold"
+                }`}
+                style={{ fontFamily: "'Roboto', sans-serif" }}
+              >
+                {course.price}
+              </p>
+              <p
+                className={`mt-2 text-sm italic ${
+                  selectedCourse === course.name ? "text-indigo-500" : "text-gray-500"
                 }`}
                 style={{ fontFamily: "'Roboto', sans-serif" }}
               >
                 {course.description}
               </p>
-              <p
-                className={`mt-3 text-xs italic ${
-                  selectedCourse === course.name ? "text-indigo-500" : "text-gray-500"
-                }`}
-                style={{ fontFamily: "'Roboto', sans-serif" }}
-              >
-                {course.eligibility}
-              </p>
-            </div>
-            <div className="mt-6">
-              <motion.div
-                className={`inline-flex items-center justify-center px-5 py-2.5 rounded-full text-sm font-semibold shadow-md transition-all duration-300 ${
+
+              {/* Button */}
+              <motion.button
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                onClick={() => setSelectedCourse(course.name)}
+                className={`mt-6 w-full py-3 rounded-lg font-semibold text-sm transition-all duration-300 ${
                   selectedCourse === course.name
                     ? "bg-gradient-to-r from-indigo-600 to-purple-700 text-white"
                     : "bg-indigo-100 text-indigo-700 hover:bg-indigo-200"
                 }`}
                 style={{ fontFamily: "'Poppins', sans-serif" }}
               >
-                {course.price}
-              </motion.div>
+                {selectedCourse === course.name ? "SELECTED" : `Go WITH ${course.name}`}
+              </motion.button>
+
+              {/* Features List */}
+              <div className="mt-8 text-left">
+                <h4
+                  className={`text-xs font-semibold uppercase tracking-wide ${
+                    selectedCourse === course.name ? "text-indigo-600" : "text-gray-500"
+                  }`}
+                  style={{ fontFamily: "'Poppins', sans-serif" }}
+                >
+                  Eligibilty
+                </h4>
+                <ul className="mt-3 space-y-3">
+                  {course.features.map((feature, idx) => (
+                    <li
+                      key={idx}
+                      className={`flex items-center text-sm ${
+                        selectedCourse === course.name ? "text-indigo-600" : "text-gray-600"
+                      }`}
+                      style={{ fontFamily: "'Roboto', sans-serif" }}
+                    >
+                      <span className="text-indigo-500 mr-2">✓</span>
+                      {feature}
+                    </li>
+                  ))}
+                </ul>
+              </div>
             </div>
           </motion.div>
         ))}
       </div>
 
       {/* Buttons */}
-      <div className="w-full py-8 sm:py-10 flex flex-col sm:flex-row justify-between items-center mt-12 gap-6 sm:gap-0">
+      <div className="w-full py-10 flex flex-col sm:flex-row justify-between items-center mt-12 gap-6 sm:gap-0">
         <motion.button
           whileHover={{ scale: 1.06, boxShadow: "0 15px 30px rgba(0, 0, 0, 0.15)" }}
           whileTap={{ scale: 0.94 }}
@@ -252,7 +466,7 @@ const CourseSelection = ({ nextStep, prevStep, formData, setFormData }) => {
           disabled={!selectedCourse}
           className={`w-full sm:w-auto px-8 py-3 font-semibold rounded-full shadow-xl transition-all duration-500 ${
             selectedCourse
-              ? "bg-gradient-to-r from-indigo-600 to-purple-700 text-white hover:from-indigo-700 hover:to-purple-800 border border-indigo-600/40"
+              ? "bg-indigo-600 text-white hover:from-indigo-700 hover:to-purple-800 border border-indigo-600/40"
               : "bg-gray-200 text-gray-400 cursor-not-allowed border border-gray-300/50"
           }`}
           style={{ fontFamily: "'Poppins', sans-serif" }}
